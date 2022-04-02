@@ -50,7 +50,7 @@ class Graph:
             if self.actual_node<self.n:
                 self.color_map[self.actual_node]="red"
                 for i in self.graph.neighbors(self.actual_node):
-                    #print(i)
+                    print(i)
                     self.fig.clear()
 
                     self.color_map[i]="blue"
