@@ -32,6 +32,20 @@ class Graph:
             self.graph = nx.random_regular_graph(3,self.n)
             if  nx.is_connected(self.graph):
                 break
+    def set_color(self):
+        is_notcolored=True
+        self.color_map[self.actual_node]="red"
+        for a in self.graph.neighbors(self.actual_node):
+            print(self.actual_node," : ", a)
+            if self.color_map[a]=="green" :
+                self.color_map[a] = "blue"
+                is_notcolored=False
+                break
+        if is_notcolored==True:
+            self.color_map[self.actual_node] = "blue"
+            self.actual_node+=1
+            print()
+            self.set_color()
 
     def visualizationGraph(self):
         for node in self.graph:
@@ -48,18 +62,15 @@ class Graph:
         def animate(frame):
 
             if self.actual_node<self.n:
-                self.color_map[self.actual_node]="red"
-                for i in self.graph.neighbors(self.actual_node):
-                    print(i)
-                    self.fig.clear()
-
-                    self.color_map[i]="blue"
-                    nx.draw(self.graph, pos, node_size=self.size_map, node_color=self.color_map,
+                self.fig.clear()
+                self.set_color()
+                nx.draw(self.graph, pos, node_size=self.size_map, node_color=self.color_map,
                             font_size=7, with_labels=True)
-                self.color_map[self.actual_node] = "blue"
-                self.actual_node+=1
-        ani=animation.FuncAnimation(self.fig,animate,frames=4,repeat=True)
+
+
+        ani=animation.FuncAnimation(self.fig,animate,frames=4,interval=1500,repeat=True)
 
         plt.show()
     def __str__(self):
         return "=== Graph ===\n" + "n: " + str(self.n)
+
