@@ -16,15 +16,7 @@ class Grid:
         self.path = []
         self.timeRefresh = 0.02
         self.timeRefresh2 = 0.000001
-
-        # create canvas
-        self.canvas = Canvas(self.root, height=self.height, width=self.width)
-        self.canvas.pack()
-
         self.canDraw = False
-        self.canvas.bind('<Button-1>', self.mouseClick)
-        self.canvas.bind('<ButtonRelease-1>', self.mouseRelease)
-        self.canvas.bind('<B1-Motion>', self.mouseMove)
 
     def printPath(self):
         if self.path:
@@ -66,23 +58,28 @@ class Grid:
     def mouseMove(self, event):
         # print("Mouse position: (%s %s)" % (event.x, event.y))
         if self.canDraw:
-            print("CAN DRAW")
             node = self.canvas.find_closest(event.x, event.y)
             self.canvas.itemconfig(node, fill="red")
-            self.canvas.update()
 
     def mouseRelease(self, event):
         self.canDraw = False
-        print("Release")
 
     def mouseClick(self, event):
-        print("clicked")
         node = self.canvas.find_closest(event.x, event.y)
         print(node[0])
         self.canDraw = True
         #self.mouseMove(event)
 
+    def createCanvas(self):
+        # create canvas
+        self.canvas = Canvas(self.root, height=self.height, width=self.width)
+        self.canvas.grid(row=0, column=1)
+        self.canvas.bind('<Button-1>', self.mouseClick)
+        self.canvas.bind('<ButtonRelease-1>', self.mouseRelease)
+        self.canvas.bind('<B1-Motion>', self.mouseMove)
+
     def displayGrid(self):
+        self.createCanvas()
         for y in range(0, self.rows):
             node = []
             for x in range(0, self.cols):
