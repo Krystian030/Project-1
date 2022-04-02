@@ -46,7 +46,7 @@ class Graph:
 
 
         def animate(frame):
-            print(frame)
+
             if self.actual_node<self.n:
                 self.color_map[self.actual_node]="red"
                 for i in self.graph.neighbors(self.actual_node):
