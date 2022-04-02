@@ -1,6 +1,7 @@
 import networkx as nx
 from matplotlib import pyplot as plt, animation
 import random
+import time
 class Graph:
     def __init__(self):
         self.n = None
@@ -26,34 +27,38 @@ class Graph:
         while True:
             g+=1
             self.degreeMap.clear()
-            for i in range(0, 100):
+            for i in range(0, self.n):
                 self.degreeMap.append(random.randint(1,3))
             self.graph = nx.random_regular_graph(3,self.n)
-            if  nx.check_planarity(self.graph):
+            if  nx.is_connected(self.graph):
                 break
-        print(g)
-        print(self.degreeMap)
+
     def visualizationGraph(self):
-
-
         for node in self.graph:
             self.color_map.append("green")
-            self.size_map.append(100)
+            self.size_map.append(500)
 
-        #ustawianie grubości krawędzi w zależności czy przechodizmy przez niego
-        pos = nx.spring_layout(self.graph,k=1,iterations=0)
-        nx.draw(self.graph,pos,node_size=self.size_map,node_color=self.color_map,alpha=0.8,with_labels=True,font_size=11)
+        #TODO ustawianie grubości krawędzi w zależności czy przechodizmy przez niego
+        #TODO tworzenie labelow
+        pos = nx.spring_layout(self.graph,k=4,iterations=1000)
+        nx.draw(self.graph,pos,node_size=self.size_map,node_color=self.color_map,font_size=11,with_labels=True)
         plt.title("Graph n: " + str(self.n))
 
 
         def animate(frame):
-            self.fig.clear()
-            if self.color_map[self.actual_node]=="green" and self.actual_node<self.n:
-                self.color_map[self.actual_node]="blue"
+            print(frame)
+            if self.actual_node<self.n:
+                self.color_map[self.actual_node]="red"
+                for i in self.graph.neighbors(self.actual_node):
+                    #print(i)
+                    self.fig.clear()
+
+                    self.color_map[i]="blue"
+                    nx.draw(self.graph, pos, node_size=self.size_map, node_color=self.color_map,
+                            font_size=7, with_labels=True)
+                self.color_map[self.actual_node] = "blue"
                 self.actual_node+=1
-            nx.draw(self.graph,pos, node_size=self.size_map, node_color=self.color_map, alpha=0.8, with_labels=True,
-                           font_size=7)
-        ani=animation.FuncAnimation(self.fig,animate,frames=6,interval=1,repeat=True)
+        ani=animation.FuncAnimation(self.fig,animate,frames=4,repeat=True)
 
         plt.show()
     def __str__(self):
