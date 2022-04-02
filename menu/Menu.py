@@ -21,6 +21,6 @@ bannerLabel.place(x=-2,y=5)
 g = Grid(root, 800, 600)
 
 B = Button(root, text='Grid', command=g.displayGrid)
-B.place(x=500, y=200)
+B.place(x=500, y=500)
 
 root.mainloop()
