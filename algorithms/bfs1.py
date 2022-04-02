@@ -1,9 +1,9 @@
 from tkinter import *
-from pathVisualisation.Grid import Grid, path_from
+from pathVisualisation.Grid import Grid, createPath
 
 def bfs(maze):
-    start_node = maze.find_node(0,0)
-    finish_node = maze.find_node(39,29)
+    start_node = maze.find(0,0)
+    finish_node = maze.find(39,29)
     maze.printGreen(start_node)
     maze.printRed(finish_node)
     q = [start_node]
@@ -14,9 +14,9 @@ def bfs(maze):
         if node != start_node:
             maze.printActual(node)
         if node == finish_node:
-            return path_from(node)
+            return createPath(node)
 
-        children = maze.get_possible_movements(node)
+        children = maze.getNeighbours(node)
         for child in children:
             if not child.visited:
                 child.parent = node

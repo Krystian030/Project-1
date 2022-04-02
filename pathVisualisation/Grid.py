@@ -36,7 +36,7 @@ class Grid:
     def printChild(self,node):
         self.canvas.itemconfig(node.rectId, fill="orange")
         self.root.update()
-        time.sleep( self.timeRefresh2)
+        time.sleep(self.timeRefresh2)
 
     def printVisited(self,node):
         self.canvas.itemconfig(node.rectId, fill="blue")
@@ -95,7 +95,7 @@ class Grid:
             self.grid.append(node)
         self.canvas.update()
 
-    def get_possible_movements(self, node):
+    def getNeighbours(self, node):
         possible_movements = []
         if node.y - 1 >= 0:  # north
             possible_movements.append(self.grid[node.y - 1][node.x])
@@ -108,13 +108,13 @@ class Grid:
 
         return possible_movements
 
-    def find_node(self, x,y):
+    def find(self, x,y):
         for x_nodes in self.grid:
             for node in x_nodes:
                 if node.x == x and node.y == y:
                     return node
 
-def path_from(node):
+def createPath(node):
     path = [node]
     while node.parent is not None:
         node = node.parent
