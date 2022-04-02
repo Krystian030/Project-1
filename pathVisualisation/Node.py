@@ -1,3 +1,4 @@
+import sys
 
 class Node:
     def __init__(self,x, y, id):
@@ -6,3 +7,5 @@ class Node:
         self.rectId = id
         self.visited = False
         self.parent = None
+        self.cost = sys.maxsize  # Inf
+        self.priority = sys.maxsize  # Inf

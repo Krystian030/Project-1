@@ -3,12 +3,16 @@ from pathVisualisation.Grid import Grid, path_from
 
 def bfs(maze):
     start_node = maze.find_node(0,0)
-    finish_node = maze.find_node(11,0)
+    finish_node = maze.find_node(39,29)
+    maze.printGreen(start_node)
+    maze.printRed(finish_node)
     q = [start_node]
     while len(q) > 0:
         node = q.pop(0)  # FIFO
+
         node.visited = True
-        maze.printVisited(node)
+        if node != start_node:
+            maze.printActual(node)
         if node == finish_node:
             return path_from(node)
 
@@ -16,9 +20,12 @@ def bfs(maze):
         for child in children:
             if not child.visited:
                 child.parent = node
-                q.append(child)
-                maze.printChild(child)
-        maze.printChild(node)
+                if not child in q:
+                    q.append(child)
+                    if child != finish_node:
+                        maze.printChild(child)
+        if node != start_node:
+            maze.printVisited(node)
     return None
 
 root = Tk()
