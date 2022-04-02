@@ -3,8 +3,7 @@ from pathVisualisation.Node import Node
 import time
 
 
-class Grid():
-
+class Grid:
     def __init__(self, root, width, height):
         self.canvas = None
         self.root = root
@@ -15,8 +14,8 @@ class Grid():
         self.rows = int(height / self.nodeSize)
         self.grid = []
         self.path = []
-        self.timeRefresh = 0.5
-        self.timeRefresh2 = 0.001
+        self.timeRefresh = 0.02
+        self.timeRefresh2 = 0.000001
 
         # create canvas
         self.canvas = Canvas(self.root, height=self.height, width=self.width)
@@ -40,7 +39,27 @@ class Grid():
         time.sleep( self.timeRefresh2)
 
     def printVisited(self,node):
+        self.canvas.itemconfig(node.rectId, fill="blue")
+        self.root.update()
+        time.sleep(self.timeRefresh2)
+
+    def printRed(self,node):
+        self.canvas.itemconfig(node.rectId, fill="red")
+        self.root.update()
+        time.sleep(self.timeRefresh2)
+
+    def printGreen(self,node):
+        self.canvas.itemconfig(node.rectId, fill="green")
+        self.root.update()
+        time.sleep(self.timeRefresh2)
+
+    def printActual(self,node):
         self.canvas.itemconfig(node.rectId, fill="black")
+        self.root.update()
+        time.sleep(self.timeRefresh2)
+
+    def printWhite(self,node):
+        self.canvas.itemconfig(node.rectId, fill="white")
         self.root.update()
         time.sleep(self.timeRefresh2)
 
