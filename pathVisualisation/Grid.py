@@ -79,6 +79,10 @@ class Grid:
         self.canvas.bind('<B1-Motion>', self.mouseMove)
 
     def displayGrid(self):
+        # clear window
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
         self.createCanvas()
         for y in range(0, self.rows):
             node = []

@@ -48,7 +48,7 @@ class Graph:
                 for a in self.graph.neighbors(self.actual_node):
                     if a not in self.tovisit and a not in self.visited:
                         self.tovisit.append(a)
-                        break;
+                        break
             for a in self.tovisit:
                 self.color_map[self.order.index(a)] = "yellow"
             print(self.actual_node,"visi",self.visited,"to vi", self.tovisit)
@@ -82,7 +82,7 @@ class Graph:
                 self.set_color()
                 nx.draw(self.graph, pos, node_size=self.size_map, node_color=self.color_map,
                             font_size=7, with_labels=self.labels)
-        ani=animation.FuncAnimation(self.fig,animate,frames=4,interval=1000,repeat=True)
+        ani=animation.FuncAnimation(self.fig, animate, frames=4, interval=1000, merepeat=True)
 
         plt.show()
     def __str__(self):
