@@ -2,19 +2,24 @@ import networkx as nx
 from matplotlib import pyplot as plt, animation
 import random
 import time
+from algorithms.Bfs import Bfs
 class Graph:
     def __init__(self):
-        self.n = None
+        self.n = 0
         self.graph = None
         self.fig=plt.figure()
+        self.position=None
         self.color_map = []
         self.size_map=[]
         self.actual_node=0
+        self.width = {}
         self.degreeMap=[]
-        self.labels=[]
+        self.labels={}
         self.visited = []
         self.tovisit=[]
-        self.order=[] # Rysowanie odbywa się wedle pozycji, a te pozycje zapisane są w tablicy order
+        self.order=[]  # Rysowanie odbywa się wedle pozycji, a te pozycje zapisane są w tablicy order
+        self.order_label=0
+        self.prev_head=-1
     def createRandomGraph(self):
         # TODO
         pass
@@ -23,7 +28,6 @@ class Graph:
         # TODO
         pass
 
-    # density - percent of density (1% - 100%) ok
     def randomGraph(self, n, density):
         self.n = n
         g=0
@@ -36,54 +40,48 @@ class Graph:
             if  nx.is_connected(self.graph):
                 break
 
-    def set_color(self):
-        if self.tovisit or not self.visited:
-
-            if all(elem in self.tovisit+self.visited for elem in self.graph.neighbors(self.actual_node)):
-                self.color_map[self.order.index(self.actual_node)] = "blue"
-                self.visited.append(self.actual_node)
-                self.actual_node=self.tovisit.pop(0)
-                self.color_map[self.order.index(self.actual_node)] = "red"
-            else:
-                for a in self.graph.neighbors(self.actual_node):
-                    if a not in self.tovisit and a not in self.visited:
-                        self.tovisit.append(a)
-                        break;
-            for a in self.tovisit:
-                self.color_map[self.order.index(a)] = "yellow"
-            print(self.actual_node,"visi",self.visited,"to vi", self.tovisit)
-            for a in self.graph.neighbors(self.actual_node):
-                print(a, end=' ')
-            print()
-        else:
-            self.color_map[self.order.index(self.actual_node)] = "blue"
-
-    def visualizationGraph(self):
+    def data_init(self):
         for node in self.graph:
             self.color_map.append("green")
             self.size_map.append(500)
-            self.labels.append(0)
-        #TODO ustawianie grubości krawędzi w zależności czy przechodizmy przez niego
-        #TODO tworzenie labelow
-        pos = nx.spring_layout(self.graph,k=4,iterations=1000)
-        print(pos.keys())
-        for id in pos.keys():
+        self.position = nx.spring_layout(self.graph,k=4,iterations=1000)
+        for id in self.position.keys():
             self.order.append(id)
-        for i in range(0,self.n) :
-            self.labels[self.order.index(i)]=str(i)
-
         self.color_map[self.order.index(self.actual_node)] = "red"
-        print(self.labels)
-        nx.draw(self.graph,pos,node_size=self.size_map,node_color=self.color_map,font_size=11,with_labels=self.labels)
+        for u,v in self.graph.edges:
+            self.width[u,v] = 0.1
+
+    def set_color(self):
+        for a in self.tovisit:
+            self.color_map[self.order.index(a)] = "yellow"
+        for a in self.visited:
+            self.color_map[self.order.index(a)] = "blue"
+        if not self.actual_node == -1:
+            self.color_map[self.order.index(self.actual_node)] = "red"
+            if not self.prev_head == self.actual_node:
+                self.labels[self.actual_node] = str(self.order_label+1)
+                self.order_label+=1
+                self.prev_head=self.actual_node
+
+    def visualizationGraph(self):
+        #TODO ustawianie grubości krawędzi w zależności czy przechodizmy przez niego stworzyć mapę
+        #TODO tworzenie labelow
+        self.data_init()
+        nx.draw(self.graph,self.position,node_size=self.size_map,node_color=self.color_map,font_size=11,with_labels=True,
+                labels=self.labels,width=list(self.width.values()))
         plt.title("Graph n: " + str(self.n))
+        alg=Bfs(self)
+
         def animate(frame):
             if self.actual_node<self.n:
                 self.fig.clear()
+                if not self.actual_node == -1:
+                    alg.bfs(self)
                 self.set_color()
-                nx.draw(self.graph, pos, node_size=self.size_map, node_color=self.color_map,
-                            font_size=7, with_labels=self.labels)
-        ani=animation.FuncAnimation(self.fig,animate,frames=4,interval=1000,repeat=True)
-
+                print(self.color_map)
+                nx.draw(self.graph, self.position, node_size=self.size_map, node_color=self.color_map,
+                            font_size=7, with_labels=True, labels=self.labels,width=list(self.width.values()))
+        ani=animation.FuncAnimation(self.fig,animate,interval=3000,repeat=True)
         plt.show()
     def __str__(self):
         return "=== Graph ===\n" + "n: " + str(self.n)
