@@ -1,7 +1,7 @@
 class Bfs:
     def __init__(self,structure):
         self.struct = structure
-
+#
     def bfs(self,graph):
 
         if graph.tovisit or not graph.visited:
