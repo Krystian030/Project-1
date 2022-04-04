@@ -1,5 +1,7 @@
 from tkinter import *
 import os
+
+from graph.Graph import Graph
 from pathVisualisation.GridBoard import GridBoard
 
 
@@ -12,6 +14,7 @@ class MenuWindow:
         self.createBackground()
         self.createBanner()
         self.createBtnGridBoard()
+        self.createBtnGraph()
 
     # set background
     def createBackground(self):
@@ -26,8 +29,12 @@ class MenuWindow:
     # GridBoard
     def createBtnGridBoard(self):
         g = GridBoard(self.root, 800, 600)
-        B = Button(self.root, text='Path sss', width=20, height=5, background="black", fg="white", command=g.displayGridBoard)
-        B.grid(row=2, column=1)
-        B2 = Button(self.root, text='Path simulation', width=20, height=5, background="black", fg="white",
-                   command=g.displayGridBoard)
-        B2.grid(row=2,column=3)
+        B = Button(self.root, text='Grid algorithms', width=35, height=20, background="black", fg="white", command=g.displayGridBoard)
+        B.place(x=100, y=500)
+
+    def createBtnGraph(self):
+        graph = Graph()
+        graph.randomGraph(6,1)
+        B2 = Button(self.root, text='Graph algorithm', width=35, height=20, background="black", fg="white",
+                   command=graph.visualizationGraph)
+        B2.place(x=600, y=500)
