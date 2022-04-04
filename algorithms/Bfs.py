@@ -24,3 +24,32 @@ class Bfs:
             graph.size_map[graph.order.index(graph.actual_node)] = 500
             graph.actual_node = -1
 
+    def bfsGridBoard(board):
+        start_node = board.startNode
+        finish_node = board.endNode
+        board.printGreen(start_node)
+        board.printRed(finish_node)
+        q = [start_node]
+        while len(q) > 0:
+            node = q.pop(0)  # FIFO
+
+            node.visited = True
+            if node != start_node:
+                board.printActual(node)
+            if node == finish_node:
+                board.createPath(node)
+                board.printPath()
+                return 0
+
+            children = board.getNeighbours(node)
+            for child in children:
+                if not child.visited:
+                    child.parent = node
+                    if not child in q:
+                        q.append(child)
+                        if child != finish_node:
+                            board.printChild(child)
+            if node != start_node:
+                board.printVisited(node)
+        return None
+
