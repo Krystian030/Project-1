@@ -1,11 +1,11 @@
 from tkinter import *
-from pathVisualisation.Grid import Grid, path_from
+from pathVisualisation.GridBoardBoard import GridBoard, path_from
 
-def a_star(maze):
-    start_node = maze.find_node(0, 0)
-    finish_node = maze.find_node(39, 29)
-    maze.printGreen(start_node)
-    maze.printRed(finish_node)
+def a_star(board):
+    start_node = board.find_node(0, 0)
+    finish_node = board.find_node(39, 29)
+    board.printGreen(start_node)
+    board.printRed(finish_node)
     start_node.cost = 0
     start_node.priority = 0
     pq = [start_node]
@@ -18,11 +18,11 @@ def a_star(maze):
         node.visited = True
 
         if node != start_node:
-            maze.printActual(node)
+            board.printActual(node)
         if node == finish_node:
             return path_from(node)
 
-        children = maze.get_possible_movements(node)
+        children = board.get_possible_movements(node)
         for child in children:
             if not child in pq:
                 new_cost = node.cost + 1
@@ -36,9 +36,9 @@ def a_star(maze):
                     print("child priority: " + str(child.priority))
                     pq.append(child)
                     if child != finish_node:
-                        maze.printChild(child)
+                        board.printChild(child)
         if node != start_node:
-            maze.printVisited(node)
+            board.printVisited(node)
     return None
 
 
@@ -46,13 +46,13 @@ root = Tk()
 root.title("Path")
 root.geometry("800x600")
 
-maze = Grid(root, 800, 600)
-maze.displayGrid()
+board = GridBoard(root, 800, 600)
+board.displayGridBoard()
 
-maze.path = a_star(maze)
-maze.printPath()
-print('path length: ', len(maze.path))
-for node in maze.path:
+board.path = a_star(board)
+board.printPath()
+print('path length: ', len(board.path))
+for node in board.path:
     print(f'({node.x}, {node.y})', end=' ')
 print()
 

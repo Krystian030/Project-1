@@ -4,7 +4,7 @@ from tkinter import *
 
 if __name__ == '__main__':
     # graph = Graph()
-    # graph.randomGraph(100,1)
+    # graph.randomGraph(6,1)
     # graph.visualizationGraph()
     root = Tk()
     root.title("Path")

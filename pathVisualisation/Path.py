@@ -1,11 +1,11 @@
 from tkinter import *
-from Grid import Grid
+from GridBoard import GridBoard
 
 root = Tk()
 root.title("Path")
-root.geometry("800x600")
+root.geometry("1200x600")
 
-b = Grid(root, 800, 600)
-b.displayGrid()
+b = GridBoard(root, 800, 600)
+b.displayGridBoard()
 
 root.mainloop()
