@@ -19,6 +19,11 @@ class Bfs:
                         else:
                             graph.width[ a,graph.actual_node] = 1
                         break
+            if not graph.prev_head == graph.actual_node:
+                graph.labels[graph.actual_node] = str(
+                    graph.order_label + 1)  # nadawanie odpowiedniej kolejności dla labeli, kolejności rysowania,
+                graph.order_label += 1
+                graph.prev_head = graph.actual_node
         else:
             graph.visited.append(graph.actual_node)
             graph.size_map[graph.order.index(graph.actual_node)] = 500
