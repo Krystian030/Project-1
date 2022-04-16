@@ -65,16 +65,17 @@ class Graph:
 
     def visualizationGraph(self):
         self.data_init()
-        stan_list = []
+        stateList = []      #Mapa stanów kolorowań naszego grafu
+        stateNumber = 0
         root = Tk.Tk()
         root.wm_title("Graph n: " + str(self.n))
         # Quit when the window is done
         root.wm_protocol('WM_DELETE_WINDOW', root.quit)
         canvas = FigureCanvasTkAgg(self.fig, master=root)
         def drawCanvas():
-            self.fig.clear()
             plt.clf()
             self.set_color()
+            self.fig.clear()
             nx.draw_networkx(self.graph, self.position, node_size=self.size_map, node_color=self.color_map,
                              font_size=7, with_labels=True, labels=self.labels, width=list(self.width.values()))
             plt.axis('off')
@@ -82,26 +83,36 @@ class Graph:
         drawCanvas()
         canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
         alg=Dfs(self)
+        stateList.append(copy.deepcopy(self))
         def nextGraph():
-            if self.actual_node<self.n and self.actual_node!= -1:
-                stan_list.append(copy.deepcopy(self))
-                if not self.actual_node == -1:
-                    alg.func(self)
+            nonlocal  stateNumber
+            if stateNumber == len(stateList)-1:
+                if self.actual_node<self.n and self.actual_node!= -1:
+                    tmp = copy.deepcopy(self)           #tworzenie kopii stanu, żeby nie edytować dwóch elementów na raz
+                    if not self.actual_node == -1:
+                        alg.func(tmp)
+                    stateList.append(copy.deepcopy(tmp))        #dopisywanie kopii do tabeli stanów i przypisywanie spowrotem
+                    self.__dict__.update(tmp.__dict__)
+                    stateNumber+=1
+            else:
+                stateNumber += 1
+                self.__dict__.update(stateList[stateNumber].__dict__)
             drawCanvas()
 
         def prevGraph():
-            if stan_list:
-                self.__dict__.update(stan_list[-1].__dict__)
-                stan_list.pop()
-                drawCanvas()
+            nonlocal stateNumber
+            if stateNumber > 0:
+                stateNumber -= 1
+                self.__dict__.update(stateList[stateNumber].__dict__)
+            drawCanvas()
+
 
         button_next = Tk.Button(root, text="next", command=nextGraph)
         button_next.pack()
         button_prev = Tk.Button(root, text="prev", command=prevGraph)
         button_prev.pack()
-
         Tk.mainloop()
 
     def __str__(self):
-        return "=== Graph ===\n" + "n: " + str(self.n)
+        return str(self.tovisit)
 
