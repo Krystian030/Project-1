@@ -15,6 +15,7 @@ class RandomAlgorithm:
                graph.actual_node = graph.tovisit[-1]
 
         else:
+
             graphNeighbors = list(graph.graph.neighbors(graph.actual_node))
             graphNeighbors = list(set(graphNeighbors) - set(graph.visited))
             graphNeighbors = list(set(graphNeighbors) - set(graph.tovisit))

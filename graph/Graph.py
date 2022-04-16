@@ -6,13 +6,14 @@ import copy
 from matplotlib import pyplot as plt, animation
 from algorithms.Bfs import Bfs
 from algorithms.Dfs import Dfs
+from algorithms.RandomAlgorithm import RandomAlgorithm
+from algorithms.RandomAlgorithmWithRepeats import RandomAlgorithmWithRepeats
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class Graph:
     def __init__(self):
         self.n = 0
         self.graph = None
-        self.fig=plt.figure()
         self.position=None
         self.color_map = []     #mapa kolorów node'ów
         self.size_map=[]        #mapa rozmiarów node
@@ -24,7 +25,7 @@ class Graph:
         self.order=[]  # Rysowanie odbywa się wedle pozycji, a te pozycje zapisane są w tablicy order
         self.order_label=0  #zmienne pomocnicze w przedzielaniu labeli na nodach
         self.prev_head=-1
-
+        self.edgeLabels = {}
     def createRandomGraph(self):
         # TODO
         pass
@@ -36,7 +37,7 @@ class Graph:
     def randomGraph(self, n, density):
         self.n = n
         while True:
-            self.graph = nx.random_regular_graph(3,self.n)
+            self.graph = nx.full_rary_tree(3,self.n)
             if  nx.is_connected(self.graph):
                 break
 #Inicjalizacja daych pomocniczych do grafu
@@ -47,10 +48,23 @@ class Graph:
         for id in self.position.keys():
             self.order.append(id)
         for u,v in self.graph.edges:
+            self.edgeLabels[u,v] = random.randint(0,100)
             self.width[u,v] = 0.1
         self.color_map[self.order.index(self.actual_node)] = "red"
         self.size_map[self.order.index(self.actual_node)] = 1000
-
+    def dataReset(self):
+        self.color_map = []     # mapa kolorów node'ów
+        self.size_map = []      # mapa rozmiarów node
+        self.actual_node = 0    # pierwszy node
+        self.width = {}
+        self.labels = {}
+        self.visited = []       # zmienne obrazujące które wierzchołki musimy jeszcze przejrzeć, a które zostały sprawdzone w całości
+        self.tovisit = []
+        self.order = []         # Rysowanie odbywa się wedle pozycji, a te pozycje zapisane są w tablicy order
+        self.order_label = 0    # zmienne pomocnicze w przedzielaniu labeli na nodach
+        self.prev_head = -1
+        self.edgeLabels = {}
+        self.data_init()
 #funkcja służaca do nadawania kolorów grafu, niebieskie to węzły przejrzane w całości, ikażdy ich sąsiad został przejrzany, zółty node przejrzany, ale jeszcze jego
 #sąsiedzi są do przejrzenia, zielony-nieruszony, a niebieski to aktualnie przeglądany
     def set_color(self):
@@ -62,27 +76,28 @@ class Graph:
             self.color_map[self.order.index(self.actual_node)] = "red"
             self.size_map[self.order.index(self.actual_node)] = 1000
 
-
+#oddzielny plik
     def visualizationGraph(self):
         self.data_init()
+        fig = plt.figure()
         stateList = []      #Mapa stanów kolorowań naszego grafu
         stateNumber = 0
         root = Tk.Tk()
         root.wm_title("Graph n: " + str(self.n))
         # Quit when the window is done
         root.wm_protocol('WM_DELETE_WINDOW', root.quit)
-        canvas = FigureCanvasTkAgg(self.fig, master=root)
+        canvas = FigureCanvasTkAgg(fig, master=root)
         def drawCanvas():
             plt.clf()
             self.set_color()
-            self.fig.clear()
-            nx.draw_networkx(self.graph, self.position, node_size=self.size_map, node_color=self.color_map,
+            fig.clear()
+            nx.draw_planar(self.graph, node_size=self.size_map, node_color=self.color_map,
                              font_size=7, with_labels=True, labels=self.labels, width=list(self.width.values()))
             plt.axis('off')
             canvas.draw()
         drawCanvas()
         canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
-        alg=Dfs(self)
+        alg=RandomAlgorithmWithRepeats(self)
         stateList.append(copy.deepcopy(self))
         def nextGraph():
             nonlocal  stateNumber
@@ -114,5 +129,5 @@ class Graph:
         Tk.mainloop()
 
     def __str__(self):
-        return str(self.tovisit)
+        return "Graph n: " + str(self.n)
 

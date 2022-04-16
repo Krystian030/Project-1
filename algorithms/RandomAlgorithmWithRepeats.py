@@ -15,8 +15,6 @@ class RandomAlgorithmWithRepeats:
         else:
             graphNeighbors = list(graph.graph.neighbors(graph.actual_node))
             choice = random.choice(graphNeighbors)
-            print(graphNeighbors)
-            print(choice)
             graph.tovisit.append(choice)
             if (graph.actual_node, choice) in graph.width:
                 graph.width[graph.actual_node, choice] = 1
