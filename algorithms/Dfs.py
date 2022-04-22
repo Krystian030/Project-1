@@ -4,7 +4,7 @@ class Dfs:
         self.struct.tovisit.append(self.struct.actual_node)
 
     def func(self,graph):
-
+        print(graph.tovisit)
         if all(elem in graph.tovisit + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):
 
             graph.visited.append(graph.actual_node)

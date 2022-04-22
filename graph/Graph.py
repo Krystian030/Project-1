@@ -6,6 +6,7 @@ import copy
 from matplotlib import pyplot as plt, animation
 from algorithms.Bfs import Bfs
 from algorithms.Dfs import Dfs
+from algorithms.dijkstra import Dijkstra
 from algorithms.RandomAlgorithm import RandomAlgorithm
 from algorithms.RandomAlgorithmWithRepeats import RandomAlgorithmWithRepeats
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -44,7 +45,7 @@ class Graph:
     def data_init(self):
         self.color_map = ["green"] * self.n
         self.size_map = [500]*self.n
-        self.position = nx.spring_layout(self.graph,k=10,iterations=1000)
+        self.position = nx.planar_layout(self.graph)
         for id in self.position.keys():
             self.order.append(id)
         for u,v in self.graph.edges:
@@ -93,11 +94,12 @@ class Graph:
             fig.clear()
             nx.draw_planar(self.graph, node_size=self.size_map, node_color=self.color_map,
                              font_size=7, with_labels=True, labels=self.labels, width=list(self.width.values()))
+            nx.draw_networkx_edge_labels(self.graph,self.position,edge_labels=self.edgeLabels)
             plt.axis('off')
             canvas.draw()
         drawCanvas()
         canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
-        alg=RandomAlgorithmWithRepeats(self)
+        alg=Dijkstra(self)
         stateList.append(copy.deepcopy(self))
         def nextGraph():
             nonlocal  stateNumber

@@ -3,7 +3,6 @@ class Bfs:
         self.struct = structure
 #
     def func(self,graph):
-
         if graph.tovisit or not graph.visited:
             if all(elem in graph.tovisit + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):
                 graph.visited.append(graph.actual_node)
