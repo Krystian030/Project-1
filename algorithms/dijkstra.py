@@ -12,7 +12,12 @@ class Dijkstra:
             if all(elem in self.elementsChecked + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):
                 graph.visited.append(graph.actual_node)
                 graph.size_map[graph.order.index(graph.actual_node)] = 500
-                graph.actual_node = min(self.costDict, key=self.costDict.get)
+                minValue = min(self.costDict, key=self.costDict.get)
+                if (self.costDict.get(minValue)[1], minValue) in graph.width:
+                    graph.width[self.costDict.get(minValue)[1], minValue] = 1
+                else:
+                    graph.width[minValue, self.costDict.get(minValue)[1]] = 1
+                graph.actual_node = minValue
                 self.actualCost = self.costDict.get(graph.actual_node)[0]
                 self.elementsChecked = []
                 del self.costDict[graph.actual_node]
