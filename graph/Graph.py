@@ -27,6 +27,7 @@ class Graph:
         self.order_label=0  #zmienne pomocnicze w przedzielaniu labeli na nodach
         self.prev_head=-1
         self.edgeLabels = {}
+        self.actualChecked = -1
     def createRandomGraph(self):
         # TODO
         pass
@@ -38,18 +39,18 @@ class Graph:
     def randomGraph(self, n, density):
         self.n = n
         while True:
-            self.graph = nx.full_rary_tree(3,self.n)
+            self.graph = nx.random_regular_graph(3,self.n)
             if  nx.is_connected(self.graph):
                 break
 #Inicjalizacja daych pomocniczych do grafu
     def data_init(self):
         self.color_map = ["green"] * self.n
         self.size_map = [500]*self.n
-        self.position = nx.planar_layout(self.graph)
+        self.position = nx.spring_layout(self.graph)
         for id in self.position.keys():
             self.order.append(id)
         for u,v in self.graph.edges:
-            self.edgeLabels[u,v] = random.randint(0,100)
+            self.edgeLabels[u,v] = random.randint(0,10)
             self.width[u,v] = 0.1
         self.color_map[self.order.index(self.actual_node)] = "red"
         self.size_map[self.order.index(self.actual_node)] = 1000
@@ -66,6 +67,7 @@ class Graph:
         self.prev_head = -1
         self.edgeLabels = {}
         self.data_init()
+        self.actualChecked = -1
 #funkcja służaca do nadawania kolorów grafu, niebieskie to węzły przejrzane w całości, ikażdy ich sąsiad został przejrzany, zółty node przejrzany, ale jeszcze jego
 #sąsiedzi są do przejrzenia, zielony-nieruszony, a niebieski to aktualnie przeglądany
     def set_color(self):
@@ -76,9 +78,10 @@ class Graph:
         if not self.actual_node == -1:
             self.color_map[self.order.index(self.actual_node)] = "red"
             self.size_map[self.order.index(self.actual_node)] = 1000
-
+        if self.actualChecked !=-1:
+            self.color_map[self.order.index(self.actualChecked)] = "orange"
     def visualizationGraph(self):
-        alg = Dfs(self)  # Wybór algorytmu z którego będziemy korzystać
+        alg = Bfs(self)  # Wybór algorytmu z którego będziemy korzystać
         self.data_init()
         fig = plt.figure()
         stateList = []      #Mapa stanów kolorowań naszego grafu
@@ -95,7 +98,7 @@ class Graph:
             plt.clf()
             self.set_color()
             fig.clear()
-            nx.draw_planar(self.graph, node_size=self.size_map, node_color=self.color_map,
+            nx.draw(self.graph,self.position, node_size=self.size_map, node_color=self.color_map,
                              font_size=7, with_labels=True, labels=self.labels, width=list(self.width.values()))
             nx.draw_networkx_edge_labels(self.graph,self.position,edge_labels=self.edgeLabels)
             plt.axis('off')

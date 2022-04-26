@@ -21,10 +21,13 @@ class Dijkstra:
                 self.actualCost = self.costDict.get(graph.actual_node)[0]
                 self.elementsChecked = []
                 del self.costDict[graph.actual_node]
+                graph.actualChecked = -1
             else:
                 for a in graph.graph.neighbors(graph.actual_node):
                     cost = 0
+
                     if a not in graph.visited + self.elementsChecked:
+                        graph.actualChecked = a
                         if a in self.costDict:
                             if (graph.actual_node, a) in graph.edgeLabels:
                                 cost = self.actualCost + graph.edgeLabels[graph.actual_node, a]
@@ -49,4 +52,5 @@ class Dijkstra:
             graph.visited.append(graph.actual_node)
             graph.size_map[graph.order.index(graph.actual_node)] = 500
             graph.actual_node = -1
+            graph.actualChecked = -1
 
