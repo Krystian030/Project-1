@@ -77,17 +77,20 @@ class Graph:
             self.color_map[self.order.index(self.actual_node)] = "red"
             self.size_map[self.order.index(self.actual_node)] = 1000
 
-#oddzielny plik
     def visualizationGraph(self):
+        alg = Dfs(self)  # Wybór algorytmu z którego będziemy korzystać
         self.data_init()
         fig = plt.figure()
         stateList = []      #Mapa stanów kolorowań naszego grafu
+        #aktualny stan używany do zapisu
         stateNumber = 0
         root = Tk.Tk()
         root.wm_title("Graph n: " + str(self.n))
         # Quit when the window is done
         root.wm_protocol('WM_DELETE_WINDOW', root.quit)
         canvas = FigureCanvasTkAgg(fig, master=root)
+
+
         def drawCanvas():
             plt.clf()
             self.set_color()
@@ -99,7 +102,7 @@ class Graph:
             canvas.draw()
         drawCanvas()
         canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
-        alg=Dijkstra(self)
+
         stateList.append(copy.deepcopy(self))
         def nextGraph():
             nonlocal  stateNumber
@@ -122,7 +125,6 @@ class Graph:
                 stateNumber -= 1
                 self.__dict__.update(stateList[stateNumber].__dict__)
             drawCanvas()
-
 
         button_next = Tk.Button(root, text="next", command=nextGraph)
         button_next.pack()

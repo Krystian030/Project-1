@@ -4,12 +4,16 @@ class Dfs:
         self.struct.tovisit.append(self.struct.actual_node)
 
     def func(self,graph):
-        print(graph.tovisit)
+
         if all(elem in graph.tovisit + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):
+            graph.labels[graph.actual_node] = str(
+                graph.order_label + 1)  # nadawanie odpowiedniej kolejności dla labeli, kolejności rysowania,
+            graph.order_label += 1
 
             graph.visited.append(graph.actual_node)
             graph.size_map[graph.order.index(graph.actual_node)] = 500
             graph.tovisit.pop()
+
             if graph.tovisit:
                graph.actual_node = graph.tovisit[-1]
 
@@ -29,6 +33,3 @@ class Dfs:
             graph.visited.append(graph.actual_node)
             graph.size_map[graph.order.index(graph.actual_node)] = 500
             graph.actual_node = -1
-        # print(graph.visited)
-        # print(graph.tovisit)
-        # print(graph.actual_node)
