@@ -2,18 +2,13 @@ class Dfs:
     def __init__(self,structure):
         self.struct = structure
         self.struct.tovisit.append(self.struct.actual_node)
-
+        self.struct.labels[self.struct.actual_node] = 0
     def func(self,graph):
 
         if all(elem in graph.tovisit + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):
-            graph.labels[graph.actual_node] = str(
-                graph.order_label + 1)  # nadawanie odpowiedniej kolejności dla labeli, kolejności rysowania,
-            graph.order_label += 1
-
             graph.visited.append(graph.actual_node)
             graph.size_map[graph.order.index(graph.actual_node)] = 500
             graph.tovisit.pop()
-
             if graph.tovisit:
                graph.actual_node = graph.tovisit[-1]
 
@@ -27,6 +22,10 @@ class Dfs:
                         graph.width[ a,graph.actual_node] = 1
                     graph.size_map[graph.order.index(graph.actual_node)] = 500
                     graph.actual_node = a
+                    if a not in graph.labels:
+                        graph.labels[a] = str(
+                            graph.order_label + 1)  # nadawanie odpowiedniej kolejności dla labeli, kolejności rysowania,
+                        graph.order_label += 1
                     break
 
         if not graph.tovisit and  graph.visited:
