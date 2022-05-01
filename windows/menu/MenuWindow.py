@@ -14,7 +14,7 @@ class MenuWindow:
         self.createBackground()
         self.createBanner()
         self.createBtnGridBoard()
-        self.createBtnGraph()
+        # self.createBtnGraph()
 
     # set background
     def createBackground(self):
@@ -29,12 +29,12 @@ class MenuWindow:
     # GridBoard
     def createBtnGridBoard(self):
         g = GridBoard(self.root, 800, 600)
-        B = Button(self.root, text='Grid algorithms', width=35, height=20, background="black", fg="white", command=g.displayGridBoard)
+        B = Button(self.root, text='Grid algorithms', width=35, height=20, background="black", fg="white", command=g.grid_visualisation.display_grid_board)
         B.place(x=100, y=500)
 
-    def createBtnGraph(self):
-        graph = Graph()
-        graph.randomGraph(6,1)
-        B2 = Button(self.root, text='Graph algorithm', width=35, height=20, background="black", fg="white",
-                   command=graph.visualizationGraph)
-        B2.place(x=600, y=500)
+    # def createBtnGraph(self):
+    #     graph = Graph()
+    #     graph.randomGraph(11,3)
+    #     B2 = Button(self.root, text='Graph algorithm', width=35, height=20, background="black", fg="white",
+    #                command=graph.visualizationGraph)
+    #     B2.place(x=600, y=500)

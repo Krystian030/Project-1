@@ -1,9 +1,10 @@
 class Bfs:
-    def __init__(self,structure):
+    def __init__(self, structure):
         self.struct = structure
         self.struct.labels[self.struct.actual_node] = 0
-#
-    def func(self,graph):
+
+    #
+    def func(self, graph):
         if graph.tovisit or not graph.visited:
             if all(elem in graph.tovisit + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):
                 graph.visited.append(graph.actual_node)
@@ -15,9 +16,9 @@ class Bfs:
                     if a not in graph.tovisit and a not in graph.visited:
                         graph.tovisit.append(a)
                         if (graph.actual_node, a) in graph.width:
-                            graph.width[graph.actual_node, a] =1
+                            graph.width[graph.actual_node, a] = 1
                         else:
-                            graph.width[ a,graph.actual_node] = 1
+                            graph.width[a, graph.actual_node] = 1
                         if a not in graph.labels:
                             graph.labels[a] = str(
                                 graph.order_label + 1)  # nadawanie odpowiedniej kolejności dla labeli, kolejności rysowania,
@@ -32,17 +33,18 @@ class Bfs:
             graph.actual_node = -1
 
     def bfsGridBoard(board):
-        start_node = board.startNode
-        finish_node = board.endNode
-        board.printGreen(start_node)
-        board.printRed(finish_node)
+        start_node = board.start_node
+        finish_node = board.end_node
+        board.grid_visualisation.change_node_color(start_node, "green")
+        board.grid_visualisation.change_node_color(finish_node, "purple")
+
         q = [start_node]
         while len(q) > 0:
-            node = q.pop(0)  # FIFO
+            node = q.pop(0)
 
             node.visited = True
             if node != start_node:
-                board.printActual(node)
+                board.grid_visualisation.change_node_color(node, "black")
             if node == finish_node:
                 board.createPath(node)
                 board.printPath()
@@ -55,8 +57,7 @@ class Bfs:
                     if not child in q:
                         q.append(child)
                         if child != finish_node:
-                            board.printChild(child)
+                            board.grid_visualisation.change_node_color(child, "orange")
             if node != start_node:
-                board.printVisited(node)
+                board.grid_visualisation.change_node_color(node, "blue")
         return None
-

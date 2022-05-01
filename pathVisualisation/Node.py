@@ -10,3 +10,4 @@ class Node:
         self.type = None
         self.cost = sys.maxsize  # Inf
         self.priority = sys.maxsize  # Inf
+
