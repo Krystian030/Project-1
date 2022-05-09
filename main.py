@@ -3,6 +3,8 @@ from windows.menu.MenuWindow import MenuWindow
 from tkinter import *
 from statsForGraph.Stats import Stats
 from visualisation.GraphVisualization import GraphVisualization
+from pathVisualisation.GridBoard import *
+from pathVisualisation.GridVisualisation import *
 if __name__ == '__main__':
     # stats = Stats()
     # stats.createStats()
@@ -18,4 +20,7 @@ if __name__ == '__main__':
     # root.geometry("1280x900+100+50")
     #
     # menu = MenuWindow(root)
+    # g = GridBoard(root, 800, 600)
+    # g.displayGridBoard()
+
     # root.mainloop()

@@ -1,3 +1,6 @@
+from pathVisualisation.Node import *
+import copy
+
 class Bfs:
     def __init__(self, structure):
         self.struct = structure
@@ -32,32 +35,71 @@ class Bfs:
             graph.size_map[graph.order.index(graph.actual_node)] = 500
             graph.actual_node = -1
 
-    def bfsGridBoard(board):
-        start_node = board.start_node
-        finish_node = board.end_node
-        board.grid_visualisation.change_node_color(start_node, "green")
-        board.grid_visualisation.change_node_color(finish_node, "purple")
 
-        q = [start_node]
-        while len(q) > 0:
-            node = q.pop(0)
+class BfsGrid:
+    def __init__(self, grid):
+        self.grid = grid
+        # Type of nodes
+        self.start = StartNode()
+        self.end = EndNode()
+        self.actual_node = Actual()
+        self.visited = Visited()
+        self.to_visit = ToVisit()
+        self.path = Path()
+        self.start_node = None
+        self.q = None
+        self.end_node = None
+        self.state = []
+        self.states = []
+
+    def start_algorithm(self):
+        self.start_node = self.grid.start_node
+        self.end_node = self.grid.end_node
+        self.start_node.type = self.start
+        self.end_node.type = self.end
+        # self.grid.node_to_change.extend([self.start_node, self.end_node])
+        self.states.append(copy.deepcopy([self.start_node, self.end_node]))
+        # queue
+        self.q = [self.start_node]
+
+    def bfs_algorithm(self):
+        while len(self.q) > 0:
+            node = self.q.pop(0)
 
             node.visited = True
-            if node != start_node:
-                board.grid_visualisation.change_node_color(node, "black")
-            if node == finish_node:
-                board.createPath(node)
-                board.printPath()
-                return 0
+            if node != self.start_node:
+                node.type = self.actual_node
+                # self.grid.node_to_change.append(node)
+                self.state.append(node)
+            if node == self.end_node:
+                self.grid.createPath(node)
+                # self.grid.printPath()
+                for node in self.grid.path:
+                    node.type = self.path
+                    # self.grid.node_to_change.apend(node)
+                    self.state.append(node)
+                self.grid.node_to_change = self.state
+                # self.grid.grid_visualisation.update_grid()
+                # self.states.append(self.grid.node_to_change)
+                self.states.append(copy.deepcopy(self.state))
+                break
 
-            children = board.getNeighbours(node)
+            children = self.grid.getNeighbours(node)
             for child in children:
                 if not child.visited:
                     child.parent = node
-                    if not child in q:
-                        q.append(child)
-                        if child != finish_node:
-                            board.grid_visualisation.change_node_color(child, "orange")
-            if node != start_node:
-                board.grid_visualisation.change_node_color(node, "blue")
-        return None
+                    if not child in self.q:
+                        self.q.append(child)
+                        if child != self.end_node:
+                            child.type = self.to_visit
+                            # self.grid.node_to_change.append(child)
+                            self.state.append(child)
+            self.grid.node_to_change = self.state
+            # self.grid.grid_visualisation.update_grid()
+            self.states.append(copy.deepcopy(self.state))
+            self.state = []
+            if node != self.start_node:
+                node.type = self.visited
+                self.state.append(node)
+                # self.grid.node_to_change.append(node)
+        return self.states

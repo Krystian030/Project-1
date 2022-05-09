@@ -3,7 +3,7 @@ from tkinter import *
 from pathVisualisation.Node import Node
 import time
 from pathVisualisation.GridVisualisation import *
-from algorithms.Bfs import Bfs
+from algorithms.Bfs import *
 
 
 class GridBoard:
@@ -14,10 +14,11 @@ class GridBoard:
         self.node_size = 20
         self.start_node = None
         self.end_node = None
-        self.algorithm = partial(Bfs.bfsGridBoard, self)
+        self.algorithm = BfsGrid(self)
         self.path = []
         self.grid_visualisation = GridVisualisation(self, self.root, 1280, 900)
         self.grid_board = self.grid_visualisation.display_grid_board()
+        self.node_to_change = []
 
     def printPath(self):
         for node in self.path:
