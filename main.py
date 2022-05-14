@@ -6,10 +6,8 @@ from visualisation.GraphVisualization import GraphVisualization
 from pathVisualisation.GridBoard import *
 from pathVisualisation.GridVisualisation import *
 if __name__ == '__main__':
-    # stats = Stats()
-    # stats.createStats()
     graph = Graph()
-    graph.randomGraph(11,3)  # tworzenie grafu 3 stopnia(ilosc, stopnien)
+    graph.randomTree(11,3)  # tworzenie grafu 3 stopnia(ilosc, stopnien)
     # graph.randomTree(10,2)  # tworzenie drzewa dowolnego stopnia (ilosc, stopnien)
 
 

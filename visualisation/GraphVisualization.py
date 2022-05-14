@@ -14,8 +14,13 @@ class GraphVisualization:
 	def __init__(self):
 		pass
 	@staticmethod
-	def visualizationGraph(g):
-		alg = Dijkstra(g)  # Wybór algorytmu z którego będziemy korzystać
+	def visualizationGraph(g,algNumber):
+		if algNumber == 1:
+			alg = Bfs(g)  # Wybór algorytmu z którego będziemy korzystać
+		elif algNumber == 2:
+			alg = Dfs(g)
+		else:
+			alg = Dijkstra(g)
 		g.data_init()
 		fig = plt.figure()
 		stateList = []  # Mapa stanów kolorowań naszego grafu
