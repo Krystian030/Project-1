@@ -13,14 +13,12 @@ if __name__ == '__main__':
     # graph.randomTree(10,2)  # tworzenie drzewa dowolnego stopnia (ilosc, stopnien)
 
 
-    GraphVisualization.visualizationGraph(graph)    #metoda statyczna, bez potrzeby tworzenia instancji
+    # GraphVisualization.visualizationGraph(graph)    #metoda statyczna, bez potrzeby tworzenia instancji
     # graph.visualizationGraph()
-    # root = Tk()
-    # root.title("Path")
-    # root.geometry("1280x900+100+50")
-    #
-    # menu = MenuWindow(root)
-    # g = GridBoard(root, 800, 600)
-    # g.displayGridBoard()
+    root = Tk()
+    root.title("Path")
+    root.geometry("1280x900+100+50")
 
-    # root.mainloop()
+    menu = MenuWindow(root)
+
+    root.mainloop()

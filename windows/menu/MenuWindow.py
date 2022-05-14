@@ -27,9 +27,11 @@ class MenuWindow:
         bannerLabel.grid(row=1,column=1)
 
     # GridBoard
+    def createGrid(self):
+        GridBoard(self.root, 800, 600)
+
     def createBtnGridBoard(self):
-        g = GridBoard(self.root, 800, 600)
-        B = Button(self.root, text='Grid algorithms', width=35, height=20, background="black", fg="white", command=g.grid_visualisation.display_grid_board)
+        B = Button(self.root, text='Grid algorithms', width=35, height=20, background="black", fg="white", command=self.createGrid)
         B.place(x=100, y=500)
 
     # def createBtnGraph(self):

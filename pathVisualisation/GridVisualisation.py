@@ -1,5 +1,7 @@
 from pathVisualisation.GridBoard import *
+from pathVisualisation.Node import *
 from tkinter import *
+
 
 
 class GridVisualisation:

@@ -1,5 +1,7 @@
 from functools import partial
 from tkinter import *
+
+from pathVisualisation.GridVisualisation import GridVisualisation
 from pathVisualisation.Node import Node
 import time
 from pathVisualisation.GridVisualisation import *
