@@ -28,14 +28,14 @@ class GridBoard:
 
     def getNeighbours(self, node):
         possible_movements = []
-        if node.y - 1 >= 0 and self.grid_board[node.y - 1][node.x].type != 'obstacle':
-            possible_movements.append(self.grid_board[node.y - 1][node.x])
         if node.x + 1 < len(self.grid_board[node.y]) and self.grid_board[node.y][node.x + 1].type != 'obstacle':
             possible_movements.append(self.grid_board[node.y][node.x + 1])
-        if node.y + 1 < len(self.grid_board) and self.grid_board[node.y + 1][node.x].type != 'obstacle':
-            possible_movements.append(self.grid_board[node.y + 1][node.x])
         if node.x - 1 >= 0 and self.grid_board[node.y][node.x - 1].type != 'obstacle':
             possible_movements.append(self.grid_board[node.y][node.x - 1])
+        if node.y - 1 >= 0 and self.grid_board[node.y - 1][node.x].type != 'obstacle':
+            possible_movements.append(self.grid_board[node.y - 1][node.x])
+        if node.y + 1 < len(self.grid_board) and self.grid_board[node.y + 1][node.x].type != 'obstacle':
+            possible_movements.append(self.grid_board[node.y + 1][node.x])
         return possible_movements
 
     def find_node_by_id(self, rectId):

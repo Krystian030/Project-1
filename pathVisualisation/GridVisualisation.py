@@ -1,8 +1,7 @@
 from pathVisualisation.GridBoard import *
 from pathVisualisation.Node import *
 from tkinter import *
-
-
+import time
 
 class GridVisualisation:
 
@@ -20,8 +19,8 @@ class GridVisualisation:
         self.mode = [False, False, False]
         self.time_refresh = 0.1
         self.can_draw = False
-        self.r1_btn, self.r2_btn, self.r3_btn = self.create_radio_btn()
-        self.elements = [self.r1_btn, self.r2_btn, self.r3_btn, self.btn_algorithm]
+        self.r1_btn, self.r2_btn, self.r3_btn, self.r4_btn = self.create_radio_btn()
+        self.elements = [self.r1_btn, self.r2_btn, self.r3_btn, self.r4_btn, self.btn_algorithm]
         self.state_number = 0
         self.states = None
         self.auto_running = None
@@ -37,14 +36,24 @@ class GridVisualisation:
         btn.place(x=1000, y=250)
         return btn
 
+    def print_path(self, color):
+        for node in self.grid.path:
+            self.change_node_color(node, color)
+
     def inc_state(self):
-        if self.state_number < len(self.states):
+        if self.state_number < len(self.states) - 1:
             self.state_number += 1
             self.update_grid_state_number(self.states[self.state_number])
+        # ostatni state
+        elif self.state_number == len(self.states) - 1:
+            self.update_grid_state_number(self.states[self.state_number][:1])
+            self.print_path("green")
 
     def dec_state(self):
         if self.state_number > 0:
             self.clear_state(self.states[self.state_number])
+            if self.state_number == len(self.states) - 1:
+                self.print_path("blue")
             self.state_number -= 1
             self.update_grid_state_number(self.states[self.state_number])
 
@@ -79,7 +88,8 @@ class GridVisualisation:
 
     def auto_run(self):
         self.auto_running = True
-        for i in range(self.state_number, len(self.states)):
+        start = self.state_number
+        for i in range(start, len(self.states) - 1):
             if self.auto_running:
                 self.state_number += 1
                 for node in self.states[i]:
@@ -87,6 +97,9 @@ class GridVisualisation:
                 self.root.update()
             else:
                 break
+        if self.state_number == len(self.states) - 1:
+            self.update_grid_state_number(self.states[self.state_number][:1])
+            self.print_path("green")
 
     def stop_auto(self):
         # self.clear_state(self.states[self.state_number-1])
@@ -110,17 +123,21 @@ class GridVisualisation:
     def create_radio_btn(self):
         r1 = Radiobutton(self.outer_canvas, text="Mark start", variable=self.radio_btn_option, value=1,
                          command=self.set_mode, width=20, font="Roboto")
-        r1.place(x=950, y=100)
+        r1.place(x=950, y=50)
 
         r2 = Radiobutton(self.outer_canvas, text="Mark end", variable=self.radio_btn_option, value=2,
                          command=self.set_mode, width=20, font="Roboto")
-        r2.place(x=950, y=150)
+        r2.place(x=950, y=100)
 
         r3 = Radiobutton(self.outer_canvas, text="Draw obstacles", variable=self.radio_btn_option, value=3,
                          command=self.set_mode, width=20, font="Roboto")
-        r3.place(x=950, y=200)
+        r3.place(x=950, y=150)
 
-        return r1, r2, r3
+        r4 = Radiobutton(self.outer_canvas, text="Set cost", variable=self.radio_btn_option, value=4,
+                         command=self.set_mode, width=20, font="Roboto")
+        r4.place(x=950, y=200)
+
+        return r1, r2, r3, r4
 
     def create_canvas(self):
         outer_canvas = Canvas(self.root, width=self.window_width, height=self.window_height)
