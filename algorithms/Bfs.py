@@ -63,7 +63,7 @@ class BfsGrid:
         self.q = [self.start_node]
 
     def bfs_algorithm(self):
-        while len(self.q) > 0:
+         while len(self.q) > 0:
             node = self.q.pop(0)
 
             node.visited = True
@@ -94,7 +94,7 @@ class BfsGrid:
                             child.type = self.to_visit
                             # self.grid.node_to_change.append(child)
                             self.state.append(child)
-            self.grid.node_to_change = self.state
+            self.grid.node_to_change = copy.deepcopy(self.state)
             # self.grid.grid_visualisation.update_grid()
             self.states.append(copy.deepcopy(self.state))
             self.state = []
@@ -102,4 +102,6 @@ class BfsGrid:
                 node.type = self.visited
                 self.state.append(node)
                 # self.grid.node_to_change.append(node)
-        return self.states
+            if children is None and self.q is None:
+                return None
+         return self.states

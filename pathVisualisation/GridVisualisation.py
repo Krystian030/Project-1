@@ -136,10 +136,15 @@ class GridVisualisation:
         self.inner_canvas.bind('<ButtonRelease-1>', self.mouse_release)
         self.inner_canvas.bind('<B1-Motion>', self.mouse_move)
 
+    def set_obstacle(self, event):
+        rectId = self.grid.find_closest_node(self.inner_canvas, event)
+        self.inner_canvas.itemconfig(rectId, fill="red")
+        obstacle = self.grid.find_node_by_id(rectId)
+        obstacle.type = 'obstacle'
+
     def mouse_move(self, event):
         if self.can_draw:
-            rectId = self.grid.find_closest_node(self.inner_canvas, event)
-            self.inner_canvas.itemconfig(rectId, fill="red")
+            self.set_obstacle(event)
 
     def set_start_node(self, event):
         rectId = self.grid.find_closest_node(self.inner_canvas, event)
@@ -200,5 +205,5 @@ class GridVisualisation:
         for node in self.grid.node_to_change:
             self.inner_canvas.itemconfig(node.rectId, fill=node.type.color)
         self.root.update()
-        time.sleep(self.time_refresh)
+        # time.sleep(self.time_refresh)
         self.grid.node_to_change = []
