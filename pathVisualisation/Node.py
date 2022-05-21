@@ -1,6 +1,21 @@
 import sys
 
 
+class Obstacle:
+    def __init__(self):
+        self.color = "red"
+
+
+class Ground:
+    def __init__(self):
+        self.color = "brown"
+
+
+class River:
+    def __init__(self):
+        self.color = "lightblue"
+
+
 class StartNode:
     def __init__(self):
         self.color = "green"
@@ -39,5 +54,5 @@ class Node:
         self.visited = False
         self.parent = None
         self.type = None
-        self.cost = sys.maxsize  # Inf
-        self.priority = sys.maxsize  # Inf
+        self.cost = sys.maxsize
+        self.priority = sys.maxsize

@@ -3,6 +3,7 @@ from pathVisualisation.Node import *
 from tkinter import messagebox
 from pathVisualisation.GridVisualisation import *
 
+
 NOTHING = -1
 CLEAR = 0
 START = 1
@@ -11,7 +12,6 @@ DRAW_OBSTACLE = 3
 DRAW_RIVER = 4
 DRAW_GROUND = 5
 OPTIONS = ['None', 'obstacle', 'river [cost = 5]', 'ground [cost = 3]']
-
 
 class GridConfig:
     def __init__(self, root, grid, width, height):
@@ -24,6 +24,7 @@ class GridConfig:
         self.canvas = None
         self.entry_file_name = None
         self.mode = None
+        self.can_draw = False
         self.radio_btn_option = IntVar()
         self.list_option = StringVar()
         self.init_window_create_grid()
@@ -38,12 +39,12 @@ class GridConfig:
         self.canvas = Canvas(self.root, height=self.grid.height, width=self.grid.width)
         self.canvas.place(x=0, y=(self.window_height - self.height)//2)
         self.display_grid_board()
-        self.create_radio_button()
+        self.create_button()
         self.create_save_button()
         self.enter_file_name()
 
-    def set_mode(self):
-        if self.list_option.get() != "None":
+    def set_mode(self, *args):
+        if self.list_option.get() != 'None':
             list_opt = self.list_option.get()
             if list_opt == OPTIONS[1]:
                 self.mode = DRAW_OBSTACLE
@@ -51,12 +52,15 @@ class GridConfig:
                 self.mode = DRAW_RIVER
             elif list_opt == OPTIONS[3]:
                 self.mode = DRAW_GROUND
-            self.radio_btn_option.set(None)
-        else:
-            self.mode = self.radio_btn_option.get()
+            if self.radio_btn_option.get() is not None:
+                self.radio_btn_option.set(NOTHING)
+        elif self.list_option.get() == 'None':
+            if self.radio_btn_option.get() is not None:
+                self.mode = self.radio_btn_option.get()
+
         print(self.mode)
 
-    def create_radio_button(self):
+    def create_button(self):
         r0 = Radiobutton(self.root, text="Clear", variable=self.radio_btn_option, value=CLEAR,
                          command=self.set_mode, width=20, font="Roboto")
         r0.place(x=self.width + 20, y=(self.window_height - self.height) // 2)
@@ -76,17 +80,6 @@ class GridConfig:
 
         draw_options = OptionMenu(self.root, self.list_option, *OPTIONS, command=self.set_mode)
         draw_options.place(x=self.width+100, y=(self.window_height - self.height)//2+120)
-        # r3 = Radiobutton(self.root, text="Draw obstacles", variable=self.radio_btn_option, value=DRAW_OBSTACLE,
-        #                  command=self.set_mode, width=20, font=("Roboto",10))
-        # r3.place(x=self.width+20, y=(self.window_height - self.height)//2+90)
-        #
-        # r4 = Radiobutton(self.root, text="Draw river\n[cost = 5]", variable=self.radio_btn_option, value=DRAW_RIVER,
-        #                  command=self.set_mode, width=20, font=("Roboto",10))
-        # r4.place(x=self.width + 20, y=(self.window_height - self.height) // 2 + 120)
-        #
-        # r5 = Radiobutton(self.root, text="Draw ground\n[cost = 3]", variable=self.radio_btn_option, value=DRAW_GROUND,
-        #                  command=self.set_mode, width=20, font=("Roboto",10))
-        # r5.place(x=self.width + 20, y=(self.window_height - self.height) // 2 + 150)
 
     def create_save_button(self):
         save_button = Button(self.root, text="Save", width=20, background="black", fg="white", command=self.save_grid_to_file, font="Roboto")
@@ -108,22 +101,63 @@ class GridConfig:
     def set_start_node(self, event):
         rectId = self.grid.find_closest_node(self.canvas, event)
         start_node = self.grid.find_node_by_id(rectId)
+        start_node.type = StartNode()
         if start_node is not None:
             self.mode = None
-            color_node(self.canvas, self.root, rectId, "green")
+            self.canvas.itemconfig(rectId, fill=start_node.type.color)
             self.grid.start_node = start_node
+
+    def set_end_node(self, event):
+        rectId = self.grid.find_closest_node(self.canvas, event)
+        end_node = self.grid.find_node_by_id(rectId)
+        end_node.type = EndNode()
+        if end_node is not None:
+            self.mode = None
+            self.canvas.itemconfig(rectId, fill=end_node.type.color)
+            self.grid.end_node = end_node
 
     def mouse_click(self, event):
         if self.mode == START and self.grid.start_node is None:
             self.set_start_node(event)
         elif self.mode == END and self.grid.end_node is None:
-            pass
+            self.set_end_node(event)
+        else:
+            self.can_draw = True
+            self.mouse_move(event)
 
     def mouse_release(self, event):
-        pass
+        self.can_draw = False
 
     def mouse_move(self, event):
-        pass
+        print(self.can_draw)
+        print(self.mode)
+        if self.can_draw:
+            if self.mode == DRAW_OBSTACLE:
+                self.set_obstacle(event)
+            elif self.mode == DRAW_GROUND:
+                self.set_ground(event)
+            elif self.mode == DRAW_RIVER:
+                self.set_river(event)
+
+    def set_obstacle(self, event):
+        rectId = self.grid.find_closest_node(self.canvas, event)
+        obstacle = self.grid.find_node_by_id(rectId)
+        obstacle.type = Obstacle()
+        self.canvas.itemconfig(rectId, fill=obstacle.type.color)
+
+    def set_ground(self, event):
+        rectId = self.grid.find_closest_node(self.canvas, event)
+        ground = self.grid.find_node_by_id(rectId)
+        ground.type = Ground()
+        ground.cost = 3
+        self.canvas.itemconfig(rectId, fill=ground.type.color)
+
+    def set_river(self, event):
+        rectId = self.grid.find_closest_node(self.canvas, event)
+        river = self.grid.find_node_by_id(rectId)
+        river.type = River()
+        river.cost = 5
+        self.canvas.itemconfig(rectId, fill=river.type.color)
 
     def bind_func(self):
         self.canvas.bind('<Button-1>', self.mouse_click)
