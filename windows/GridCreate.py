@@ -5,13 +5,15 @@ from windows.WindowsOption import *
 
 
 class GridCreate:
-    def __init__(self, root):
+    def __init__(self, root, parent):
+        self.parent = parent
         self.root = root
         clear_window(root)
         self.entry_width = None
         self.entry_height = None
         self.enter_dimension_grid()
         self.create_grid_button()
+        self.back_button()
 
     def enter_dimension_grid(self):
         # set_width
@@ -27,6 +29,10 @@ class GridCreate:
 
         self.entry_height = Entry(self.root, width=10)
         self.entry_height.place(x=100, y=103)
+
+    def back_button(self):
+        create_back_button = Button(self.root, text="Back to menu", width=20, background="black", fg="white", command=self.parent.init_window, font="Roboto")
+        create_back_button.place(x=100, y=350)
 
     def create_grid_button(self):
         create_grid_button = Button(self.root, text="Create grid", width=20, background="black", fg="white", command=self.create_grid, font="Roboto")
@@ -49,6 +55,8 @@ class GridCreate:
                 messagebox.showerror("Error", "Invalid data")
             else:
                 clear_window(self.root)
-                GridBoard(self.root, width, height)
+                grid = GridBoard(self.root, width, height)
+                grid.grid_config_initialize(self.parent)
+                grid.grid_config.init_window_create_grid()
         else:
             messagebox.showerror("Error", "Invalid data")

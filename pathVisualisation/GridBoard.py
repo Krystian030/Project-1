@@ -1,12 +1,12 @@
 from functools import partial
 from tkinter import *
-
 from pathVisualisation.GridVisualisation import GridVisualisation
 from pathVisualisation.Node import Node
 import time
 from pathVisualisation.GridVisualisation import *
 from algorithms.Bfs import *
 from windows.GridConfig import *
+
 
 class GridBoard:
     def __init__(self, root, width, height):
@@ -16,27 +16,37 @@ class GridBoard:
         self.height = height * self.node_size
         self.start_node = None
         self.end_node = None
-        self.algorithm = BfsGrid(self)
+        # self.algorithm = BfsGrid(self)
+        self.algorithm = None
         self.path = []
         # self.grid_visualisation = GridVisualisation(self, self.root,  self.width, self.height)
         # self.board = self.grid_visualisation.display_grid_board()
         self.board = None
-        self.grid_config = GridConfig(self.root, self, self.width, self.height)
+        # self.grid_config = GridConfig(self.root, self, self.width, self.height)
+        self.grid_config = None
         self.node_to_change = []
+
+    def grid_config_initialize(self, parent):
+        self.grid_config = GridConfig(self.root, self, self.width, self.height, parent)
 
     def printPath(self):
         for node in self.path:
             self.grid_visualisation.change_node_color(node, "green")
 
+    def algorithm_visualisation(self):
+        grid_visualisation = GridVisualisation(self, self.root)
+        grid_visualisation.start_algorithm()
+        grid_visualisation.init_grid_visualisation()
+
     def getNeighbours(self, node):
         possible_movements = []
-        if node.x + 1 < len(self.board[node.y]) and self.board[node.y][node.x + 1].type != 'obstacle':
+        if node.x + 1 < len(self.board[node.y]) and type(self.board[node.y][node.x + 1].type) != Obstacle:
             possible_movements.append(self.board[node.y][node.x + 1])
-        if node.x - 1 >= 0 and self.board[node.y][node.x - 1].type != 'obstacle':
+        if node.x - 1 >= 0 and type(self.board[node.y][node.x - 1].type) != Obstacle:
             possible_movements.append(self.board[node.y][node.x - 1])
-        if node.y - 1 >= 0 and self.board[node.y - 1][node.x].type != 'obstacle':
+        if node.y - 1 >= 0 and type(self.board[node.y - 1][node.x].type) != Obstacle:
             possible_movements.append(self.board[node.y - 1][node.x])
-        if node.y + 1 < len(self.board) and self.board[node.y + 1][node.x].type != 'obstacle':
+        if node.y + 1 < len(self.board) and type(self.board[node.y + 1][node.x].type) != Obstacle:
             possible_movements.append(self.board[node.y + 1][node.x])
         return possible_movements
 

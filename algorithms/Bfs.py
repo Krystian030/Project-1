@@ -57,8 +57,11 @@ class BfsGrid:
         self.end_node = self.grid.end_node
         self.start_node.type = self.start
         self.end_node.type = self.end
-        # self.grid.node_to_change.extend([self.start_node, self.end_node])
-        self.states.append(copy.deepcopy([self.start_node, self.end_node]))
+        first_state = []
+        for nodes in self.grid.board:
+            for node in nodes:
+                first_state.append(copy.deepcopy(node))
+        self.states.append(first_state)
         # queue
         self.q = [self.start_node]
 
