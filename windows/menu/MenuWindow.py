@@ -1,6 +1,6 @@
 from tkinter import *
 import os
-
+from windows.menu.GridMenu import GridMenu
 from graph.Graph import Graph
 from pathVisualisation.GridBoard import GridBoard
 from visualisation.GraphVisualization import GraphVisualization
@@ -18,6 +18,7 @@ class MenuWindow:
         self.varAlg = IntVar(value=1)
         self.varGraph = IntVar()
         self.numberOfN = StringVar()
+
     # set background
     def createBackground(self):
         bgLabel = Label(self.root, image=self.bg)
@@ -28,12 +29,14 @@ class MenuWindow:
         bannerLabel = Label(self.root, image=self.banner)
         bannerLabel.grid(row=1,column=1)
 
-    # GridBoard
-    def createGrid(self):
-        GridBoard(self.root, 800, 600)
+    # GridMenu
+    def createGridMenu(self):
+        GridMenu(self.root)
+        pass
+        # GridBoard(self.root, 800, 600)
 
     def createBtnGridBoard(self):
-        B = Button(self.root, text='Grid algorithms', width=35, height=20, background="black", fg="white", command=self.createGrid)
+        B = Button(self.root, text='Grid', width=35, height=20, background="black", fg="white", command=self.createGridMenu)
         B.place(x=100, y=500)
 
     def createBtnGraph(self):
@@ -71,6 +74,8 @@ class MenuWindow:
         B = Button(self.root, text='Start', width=5, height=2, background="black", fg="white",
                    command=self.createWindowGraph)
         B.place(x=600, y=500)
+
+
     def createWindowGraph(self):
         if self.varAlg.get()==0:
             self.varAlg = IntVar(value=1)

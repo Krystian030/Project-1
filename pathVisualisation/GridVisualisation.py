@@ -1,4 +1,5 @@
 from pathVisualisation.GridBoard import *
+from windows.WindowsOption import *
 from pathVisualisation.Node import *
 from tkinter import *
 import time
@@ -8,9 +9,9 @@ class GridVisualisation:
     def __init__(self, grid, root, width, height):
         self.grid = grid
         self.root = root
-        self.clear_window(self.root)
-        self.window_width = width
+        self.window_width = width+600
         self.window_height = height
+        self.root.geometry(f'{self.window_width}x{self.window_height}')
         # self.outer_canvas, self.inner_canvas = self.create_canvas()
         self.outer_canvas, self.inner_canvas = self.create_canvas()
         self.btn_algorithm = self.create_btn_start_algorithm()
@@ -25,10 +26,10 @@ class GridVisualisation:
         self.states = None
         self.auto_running = None
 
-    @staticmethod
-    def clear_window(to_clean):
-        for widget in to_clean.winfo_children():
-            widget.destroy()
+    # @staticmethod
+    # def clear_window(to_clean):
+    #     for widget in to_clean.winfo_children():
+    #         widget.destroy()
 
     def create_btn_start_algorithm(self):
         btn = Button(self.outer_canvas, text="Start algorithm", width=20, background="black", fg="white",
@@ -183,6 +184,10 @@ class GridVisualisation:
         self.inner_canvas.itemconfig(node, fill=color)
         self.root.update()
 
+    # def color_node(canvas, node, color):
+    #     canvas.itemconfig(node, fill=color)
+    #     self.root.update()
+
     def change_node_color(self, node, color):
         self.inner_canvas.itemconfig(node.rectId, fill=color)
         self.root.update()
@@ -224,3 +229,7 @@ class GridVisualisation:
         self.root.update()
         # time.sleep(self.time_refresh)
         self.grid.node_to_change = []
+
+def color_node(canvas, root, node, color):
+    canvas.itemconfig(node, fill=color)
+    root.update()
