@@ -37,13 +37,19 @@ class GridVisualisation:
                       command=self.stop_auto)
         btn4.place(x=padding_x + 50, y=200)
 
+        create_back_button = Button(self.root, text="Back to menu", width=20, background="black", fg="white",
+                                    command=self.grid.parent.init_window, font="Roboto")
+        create_back_button.place(x=padding_x + 50, y=350)
+
+
     def start_algorithm(self):
         self.grid.algorithm.start_algorithm()
-        self.states = self.grid.algorithm.bfs_algorithm()
+        self.states = self.grid.algorithm.algorithm()
 
     def print_path(self, color):
         for node in self.grid.path:
             self.change_node_color(node, color)
+
 
     def inc_state(self):
         if self.state_number < len(self.states) - 1:
@@ -61,8 +67,6 @@ class GridVisualisation:
                 self.print_path("blue")
             self.state_number -= 1
             self.update_grid_state_number(self.states[self.state_number])
-
-
 
     def clear_state(self, state):
         for node in state:
@@ -82,9 +86,9 @@ class GridVisualisation:
         if self.state_number == len(self.states) - 1:
             self.update_grid_state_number(self.states[self.state_number][:1])
             self.print_path("green")
+            self.grid.board = self.states[0]
 
     def stop_auto(self):
-        # self.clear_state(self.states[self.state_number-1])
         self.auto_running = False
 
     def update_grid_state_number(self, state):
@@ -92,8 +96,7 @@ class GridVisualisation:
             if node.type is not None:
                 self.grid.grid_config.canvas.itemconfig(node.rectId, fill=node.type.color)
         self.root.update()
-        # time.sleep(self.time_refresh)
-        # self.grid.node_to_change = []
+
 
 
     def color_node(self, node, color):

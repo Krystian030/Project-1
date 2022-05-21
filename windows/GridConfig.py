@@ -123,6 +123,7 @@ class GridConfig:
                 outfile = open(final_name, 'wb')
                 self.grid.root = None
                 self.grid.grid_config = None
+                self.grid.parent = None
                 pickle.dump(self.grid, outfile)
                 outfile.close()
                 self.parent.grid = self.grid
@@ -185,7 +186,6 @@ class GridConfig:
     def set_obstacle(self, event):
         rectId = self.grid.find_closest_node(self.canvas, event)
         obstacle = self.grid.find_node_by_id(rectId)
-        obstacle.cost = sys.maxsize
         obstacle.type = Obstacle()
         self.canvas.itemconfig(rectId, fill=obstacle.type.color)
 
@@ -193,14 +193,12 @@ class GridConfig:
         rectId = self.grid.find_closest_node(self.canvas, event)
         ground = self.grid.find_node_by_id(rectId)
         ground.type = Ground()
-        ground.cost = 3
         self.canvas.itemconfig(rectId, fill=ground.type.color)
 
     def set_river(self, event):
         rectId = self.grid.find_closest_node(self.canvas, event)
         river = self.grid.find_node_by_id(rectId)
         river.type = River()
-        river.cost = 5
         self.canvas.itemconfig(rectId, fill=river.type.color)
 
     def set_clear(self, event):

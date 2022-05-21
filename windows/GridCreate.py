@@ -55,7 +55,7 @@ class GridCreate:
                 messagebox.showerror("Error", "Invalid data")
             else:
                 clear_window(self.root)
-                grid = GridBoard(self.root, width, height)
+                grid = GridBoard(self.root, width, height, self.parent)
                 grid.grid_config_initialize(self.parent)
                 grid.grid_config.init_window_create_grid()
         else:

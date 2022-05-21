@@ -65,46 +65,41 @@ class BfsGrid:
         # queue
         self.q = [self.start_node]
 
-    def bfs_algorithm(self):
+    def algorithm(self):
          while len(self.q) > 0:
             node = self.q.pop(0)
 
             node.visited = True
             if node != self.start_node:
-                node.type = self.actual_node
-                # self.grid.node_to_change.append(node)
+                # node.type = self.actual_node
+                node.change_type(self.actual_node)
                 self.state.append(node)
             if node == self.end_node:
                 self.grid.createPath(node)
-                # self.grid.printPath()
                 for node in self.grid.path:
                     node.type = self.path
-                    # self.grid.node_to_change.apend(node)
                     self.state.append(node)
                 self.grid.node_to_change = self.state
-                # self.grid.grid_visualisation.update_grid()
-                # self.states.append(self.grid.node_to_change)
                 self.states.append(copy.deepcopy(self.state))
                 break
 
-            children = self.grid.getNeighbours(node)
+            children = self.grid.get_neighbours(node)
             for child in children:
                 if not child.visited:
                     child.parent = node
                     if not child in self.q:
                         self.q.append(child)
                         if child != self.end_node:
-                            child.type = self.to_visit
-                            # self.grid.node_to_change.append(child)
+                            # child.type = self.to_visit
+                            child.change_type(self.to_visit)
                             self.state.append(child)
             self.grid.node_to_change = copy.deepcopy(self.state)
-            # self.grid.grid_visualisation.update_grid()
             self.states.append(copy.deepcopy(self.state))
             self.state = []
             if node != self.start_node:
-                node.type = self.visited
+                # node.type = self.visited
+                node.change_type(self.visited)
                 self.state.append(node)
-                # self.grid.node_to_change.append(node)
             if children is None and self.q is None:
                 return None
          return self.states

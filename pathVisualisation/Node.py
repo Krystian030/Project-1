@@ -56,3 +56,8 @@ class Node:
         self.type = None
         self.cost = sys.maxsize
         self.priority = sys.maxsize
+
+    def change_type(self, type_node):
+        if type(self.type) != Obstacle and type(self.type) != River and type(self.type) != Ground:
+            self.type = type_node
+        

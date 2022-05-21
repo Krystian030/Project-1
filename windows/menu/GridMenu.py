@@ -4,6 +4,7 @@ from windows.GridUpload import *
 from tkinter import *
 from tkinter import messagebox
 from algorithms.Bfs import *
+from algorithms.A_star import *
 
 class GridMenu:
     def __init__(self, root):
@@ -51,8 +52,8 @@ class GridMenu:
             print("BFS")
             self.algorithm = BfsGrid(self.grid)
         elif option == 2:
-            self.algorithm = "XDD"
             print("A*")
+            self.algorithm = AStarGrid(self.grid)
 
     def algorithm_choose(self):
         label_choose_algorithm = Label(self.canvas, text='Choose algorithm: ', width=20, font=("Roboto", 16, 'bold'))
@@ -72,6 +73,7 @@ class GridMenu:
         if self.grid is not None and self.algorithm is not None:
             print("STAAAAAAAART")
             self.grid.root = self.root
+            self.grid.parent = self
             self.grid.algorithm = self.algorithm
             self.grid.algorithm_visualisation()
         else:
@@ -85,6 +87,7 @@ class GridMenu:
 
     def change(self):
         self.grid.root = self.root
+        self.grid.parent = self
         self.grid.grid_config_initialize(self)
         clear_window(self.root)
         self.grid.grid_config.init_window_create_grid()

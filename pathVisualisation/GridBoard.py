@@ -9,20 +9,18 @@ from windows.GridConfig import *
 
 
 class GridBoard:
-    def __init__(self, root, width, height):
+    def __init__(self, root, width, height, parent):
+        self.parent = parent
         self.root = root
         self.node_size = 20
+        self.parent = None
         self.width = width * self.node_size
         self.height = height * self.node_size
         self.start_node = None
         self.end_node = None
-        # self.algorithm = BfsGrid(self)
         self.algorithm = None
         self.path = []
-        # self.grid_visualisation = GridVisualisation(self, self.root,  self.width, self.height)
-        # self.board = self.grid_visualisation.display_grid_board()
         self.board = None
-        # self.grid_config = GridConfig(self.root, self, self.width, self.height)
         self.grid_config = None
         self.node_to_change = []
 
@@ -38,7 +36,7 @@ class GridBoard:
         grid_visualisation.start_algorithm()
         grid_visualisation.init_grid_visualisation()
 
-    def getNeighbours(self, node):
+    def get_neighbours(self, node):
         possible_movements = []
         if node.x + 1 < len(self.board[node.y]) and type(self.board[node.y][node.x + 1].type) != Obstacle:
             possible_movements.append(self.board[node.y][node.x + 1])
@@ -49,6 +47,15 @@ class GridBoard:
         if node.y + 1 < len(self.board) and type(self.board[node.y + 1][node.x].type) != Obstacle:
             possible_movements.append(self.board[node.y + 1][node.x])
         return possible_movements
+
+    @staticmethod
+    def return_move_cost(node_to):
+        if type(node_to.type) == River:
+            return 5
+        elif type(node_to.type) == Ground:
+            return 3
+        else:
+            return 1
 
     def find_node_by_id(self, rectId):
         for x_nodes in self.board:
