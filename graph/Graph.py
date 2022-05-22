@@ -38,6 +38,9 @@ class Graph:
         while True:
             self.graph = nx.full_rary_tree(degree,self.n)     #tworzenie innego grafu(tree) w tym miejscu
             if  nx.is_connected(self.graph):
+                for u, v in self.graph.edges:
+                    self.edgeLabels[u, v] = random.randint(0, 10)
+                self.position = nx.spring_layout(self.graph)
                 break
     def randomGraph(self, n,degree):
         if (n * degree)%2 == 0:
@@ -48,16 +51,18 @@ class Graph:
         while True:
             self.graph = nx.random_regular_graph(degree,self.n)     #tworzenie innego grafu(tree) w tym miejscu
             if  nx.is_connected(self.graph):
+                for u, v in self.graph.edges:
+                    self.edgeLabels[u, v] = random.randint(0, 10)
+                self.position = nx.spring_layout(self.graph)
                 break
 #Inicjalizacja daych pomocniczych do grafu
     def data_init(self):
         self.color_map = ["green"] * self.n
         self.size_map = [500]*self.n
-        self.position = nx.spring_layout(self.graph)
+
         for id in self.position.keys():
             self.order.append(id)
         for u,v in self.graph.edges:
-            self.edgeLabels[u,v] = random.randint(0,10)
             self.width[u,v] = 0.1
         self.color_map[self.order.index(self.actual_node)] = "red"
         self.size_map[self.order.index(self.actual_node)] = 1000
@@ -72,7 +77,7 @@ class Graph:
         self.order = []         # Rysowanie odbywa się wedle pozycji, a te pozycje zapisane są w tablicy order
         self.order_label = 0    # zmienne pomocnicze w przedzielaniu labeli na nodach
         self.prev_head = -1
-        self.edgeLabels = {}
+
         self.data_init()
         self.actualChecked = -1
 #funkcja służaca do nadawania kolorów grafu, niebieskie to węzły przejrzane w całości, ikażdy ich sąsiad został przejrzany, zółty node przejrzany, ale jeszcze jego

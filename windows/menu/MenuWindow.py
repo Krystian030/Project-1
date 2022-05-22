@@ -16,9 +16,12 @@ class MenuWindow:
         self.createBtnGridBoard()
         self.createBtnGraph()
         self.varAlg = IntVar(value=1)
-        self.varGraph = IntVar()
-        self.numberOfN = StringVar()
-        self.numberOfDegree = StringVar()
+        self.varGraph = IntVar(value=0)
+        self.numberOfN = StringVar(value="26")
+        self.numberOfDegree = StringVar(value="3")
+        self. n = 0
+        self.degree = 2
+        self.graph = None
     # set background
     def createBackground(self):
         bgLabel = Label(self.root, image=self.bg)
@@ -81,19 +84,23 @@ class MenuWindow:
 
 
     def createWindowGraph(self):
+
         if self.varAlg.get()==0:
             self.varAlg = IntVar(value=1)
-        n = 0
-        degree = 2
-        if self.numberOfN.get()!='':
-            n = int(self.numberOfN.get())
-        if self.numberOfDegree.get()!='':
-            degree = int(self.numberOfDegree.get())
-        graph = Graph()
-        if self.varGraph.get()==0:
-            graph.randomTree(n,degree)
+
+
+        if (self.n != int(self.numberOfN.get()) or self.degree !=int(self.numberOfDegree.get())):
+            if self.numberOfN.get()!='':
+                self.n = int(self.numberOfN.get())
+            if self.numberOfDegree.get()!='':
+                self.degree = int(self.numberOfDegree.get())
+            self.graph = Graph()
+            if self.varGraph.get()==0:
+                self.graph.randomTree(self.n,self.degree)
+            else:
+                self.graph.randomGraph(self.n, self.degree)
         else:
-            graph.randomGraph(n, degree)
-        if n!=0:
-            GraphVisualization.visualizationGraph(graph,self.varAlg.get())
+            self.graph.dataReset()
+        if self.n!=0:
+            GraphVisualization.visualizationGraph(self.graph,self.varAlg.get())
 

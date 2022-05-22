@@ -32,7 +32,9 @@ class GraphVisualization:
 		root.wm_title("Graph n: " + str(g.n))
 
 		# Quit when the window is done
+
 		root.wm_protocol('WM_DELETE_WINDOW', root.quit)
+
 		canvas = FigureCanvasTkAgg(fig, master=root)
 
 		def drawCanvas():
@@ -88,3 +90,4 @@ class GraphVisualization:
 		button_prev = Tk.Button(root, text="prev", command=prevGraph)
 		button_prev.pack()
 		Tk.mainloop()
+		root.destroy()

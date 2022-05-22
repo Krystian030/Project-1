@@ -16,7 +16,7 @@ if __name__ == '__main__':
     root = Tk()
     root.title("Path")
     root.geometry("1280x900+100+50")
-
+    root.wm_protocol('WM_DELETE_WINDOW', root.quit)
     menu = MenuWindow(root)
 
     root.mainloop()
