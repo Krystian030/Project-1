@@ -18,7 +18,7 @@ class MenuWindow:
         self.varAlg = IntVar(value=1)
         self.varGraph = IntVar()
         self.numberOfN = StringVar()
-
+        self.numberOfDegree = StringVar()
     # set background
     def createBackground(self):
         bgLabel = Label(self.root, image=self.bg)
@@ -54,6 +54,10 @@ class MenuWindow:
         entryNumber.place(x=600, y=240)
         labelN = Label(self.root, text='Numer of nodes')
         labelN.place(x=570, y=220)
+        entryNumber = Entry(width=4, textvariable=self.numberOfDegree)
+        entryNumber.place(x=600, y=280)
+        labelN = Label(self.root, text='Degree')
+        labelN.place(x=570, y=260)
 
         labelA = Label(self.root, text='Choose algorithm')
         labelA.place(x=580, y=310)
@@ -80,13 +84,16 @@ class MenuWindow:
         if self.varAlg.get()==0:
             self.varAlg = IntVar(value=1)
         n = 0
+        degree = 2
         if self.numberOfN.get()!='':
             n = int(self.numberOfN.get())
+        if self.numberOfDegree.get()!='':
+            degree = int(self.numberOfDegree.get())
         graph = Graph()
         if self.varGraph.get()==0:
-            graph.randomTree(n,3)
+            graph.randomTree(n,degree)
         else:
-            graph.randomGraph(n, 3)
+            graph.randomGraph(n, degree)
         if n!=0:
             GraphVisualization.visualizationGraph(graph,self.varAlg.get())
 
