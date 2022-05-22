@@ -60,4 +60,4 @@ class Node:
     def change_type(self, type_node):
         if type(self.type) != Obstacle and type(self.type) != River and type(self.type) != Ground:
             self.type = type_node
-        
+        # self.type = type_node
