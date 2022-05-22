@@ -12,6 +12,7 @@ class GridVisualisation:
     def __init__(self, grid, root):
         self.grid = grid
         self.root = root
+        self.init_grid_board = copy.deepcopy(self.grid.board)
         self.time_refresh = 0.05
         self.state_number = 0
         self.states = None
@@ -86,7 +87,7 @@ class GridVisualisation:
         if self.state_number == len(self.states) - 1:
             self.update_grid_state_number(self.states[self.state_number][:1])
             self.print_path("green")
-            self.grid.board = self.states[0]
+            self.grid.board = copy.deepcopy(self.init_grid_board)
 
     def stop_auto(self):
         self.auto_running = False
