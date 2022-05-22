@@ -4,6 +4,8 @@ import time
 import tkinter as Tk
 import copy
 from matplotlib import pyplot as plt, animation
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
 from algorithms.Bfs import Bfs
 from algorithms.Dfs import Dfs
 from algorithms.dijkstra import Dijkstra
@@ -28,18 +30,33 @@ class GraphVisualization:
 		stateNumber = 0
 		root = Tk.Tk()
 		root.wm_title("Graph n: " + str(g.n))
+
 		# Quit when the window is done
 		root.wm_protocol('WM_DELETE_WINDOW', root.quit)
 		canvas = FigureCanvasTkAgg(fig, master=root)
+
 		def drawCanvas():
 			plt.clf()
 			g.set_color()
 			fig.clear()
+			legend_elements = [Line2D([0], [0], marker='o', color='w', label='Actual node',markerfacecolor='r', markersize=10),
+							   Line2D([0], [0], marker='o', color='w', label='Every neighbour checked',markerfacecolor='b', markersize=10),
+							   Line2D([0], [0], marker='o', color='w', label='Has neighbours to check',markerfacecolor='yellow', markersize=10),
+							   Line2D([0], [0], linewidth=0.1, color='black', label = 'Possible route'),
+							   Line2D([0], [0], linewidth=1, color='black', label = 'Chosen route')]
+			if isinstance(alg, Dijkstra):
+				legend_elements.insert(3,Line2D([0], [0], marker='o', color='w', label='Checking cost to this node',markerfacecolor='orange',
+											  markersize=10))
+			plt.legend(handles= legend_elements, loc= 0)
 			nx.draw(g.graph, g.position, node_size=g.size_map, node_color=g.color_map,
 					font_size=7, with_labels=True, labels=g.labels, width=list(g.width.values()))
 			nx.draw_networkx_edge_labels(g.graph, g.position, edge_labels=g.edgeLabels)
 			plt.axis('off')
+
+
 			canvas.draw()
+
+
 		drawCanvas()
 		canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
 		stateList.append(copy.deepcopy(g))
