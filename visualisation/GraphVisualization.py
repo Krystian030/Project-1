@@ -9,6 +9,7 @@ from matplotlib.lines import Line2D
 from algorithms.Bfs import Bfs
 from algorithms.Dfs import Dfs
 from algorithms.dijkstra import Dijkstra
+from algorithms.a_star_graph import A_star_graph
 from algorithms.RandomAlgorithm import RandomAlgorithm
 from algorithms.RandomAlgorithmWithRepeats import RandomAlgorithmWithRepeats
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -21,8 +22,11 @@ class GraphVisualization:
 			alg = Bfs(g)  # Wybór algorytmu z którego będziemy korzystać
 		elif algNumber == 2:
 			alg = Dfs(g)
-		else:
+		elif algNumber == 3:
 			alg = Dijkstra(g)
+		else:
+			alg= A_star_graph(g)
+			g.last_node = g.n - 1
 		g.data_init()
 		fig = plt.figure()
 		stateList = []  # Mapa stanów kolorowań naszego grafu

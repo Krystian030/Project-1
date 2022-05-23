@@ -27,7 +27,7 @@ class Graph:
         self.prev_head=-1
         self.edgeLabels = {}
         self.actualChecked = -1
-
+        self.last_node = -1
 #
     def loadGraph(self):
         # TODO
@@ -77,12 +77,12 @@ class Graph:
         self.order = []         # Rysowanie odbywa się wedle pozycji, a te pozycje zapisane są w tablicy order
         self.order_label = 0    # zmienne pomocnicze w przedzielaniu labeli na nodach
         self.prev_head = -1
-
         self.data_init()
-        self.actualChecked = -1
+        self.actual_checked = -1
 #funkcja służaca do nadawania kolorów grafu, niebieskie to węzły przejrzane w całości, ikażdy ich sąsiad został przejrzany, zółty node przejrzany, ale jeszcze jego
 #sąsiedzi są do przejrzenia, zielony-nieruszony, a niebieski to aktualnie przeglądany
     def set_color(self):
+
         for a in self.tovisit:
             self.color_map[self.order.index(a)] = "yellow"
         for a in self.visited:
@@ -92,7 +92,8 @@ class Graph:
             self.size_map[self.order.index(self.actual_node)] = 1000
         if self.actualChecked !=-1:
             self.color_map[self.order.index(self.actualChecked)] = "orange"
-
+        if self.last_node !=-1:
+            self.color_map[self.order.index(self.last_node)] = "black"
 
     def __str__(self):
         return "Graph n: " + str(self.n)

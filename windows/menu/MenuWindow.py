@@ -71,16 +71,20 @@ class MenuWindow:
         R4 = Radiobutton(self.root, text="Dijkstra", value=3, variable=self.varAlg, font=("Roboto", 12, 'bold'), bg="gray")
         R4.place(x=600, y=430)
 
+        R5 = Radiobutton(self.root, text="A*", value=4, variable=self.varAlg, font=("Roboto", 12, 'bold'),
+                         bg="gray")
+        R5.place(x=600, y=460)
+
         labelA = Label(self.root, text='Choose what type of graph you want', font=("Roboto", 14, 'bold'), bg="gray")
-        labelA.place(x=550, y=470)
+        labelA.place(x=550, y=500)
         R2 = Radiobutton(self.root, text="Tree", value=0, variable=self.varGraph, font=("Roboto", 12, 'bold'), bg="gray")
-        R2.place(x=600, y=500)
+        R2.place(x=600, y=530)
         R3 = Radiobutton(self.root, text="Full graph", value=1, variable=self.varGraph, font=("Roboto", 12, 'bold'), bg="gray")
-        R3.place(x=600, y=530)
+        R3.place(x=600, y=560)
 
         B = Button(self.root, text='Start', width=10, height=2, background="black", fg="white",
                    command=self.createWindowGraph, font=("Roboto", 14, 'bold'))
-        B.place(x=570, y=580)
+        B.place(x=570, y=600)
 
 
     def createWindowGraph(self):
