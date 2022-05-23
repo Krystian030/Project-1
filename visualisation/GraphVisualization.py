@@ -16,6 +16,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 class GraphVisualization:
 	def __init__(self):
 		pass
+	def xd(self):
+		pass
 	@staticmethod
 	def visualizationGraph(g,algNumber):
 		if algNumber == 1:
@@ -25,8 +27,10 @@ class GraphVisualization:
 		elif algNumber == 3:
 			alg = Dijkstra(g)
 		else:
-			alg= A_star_graph(g)
 			g.last_node = g.n - 1
+			alg= A_star_graph(g)
+
+
 		g.data_init()
 		fig = plt.figure()
 		stateList = []  # Mapa stanów kolorowań naszego grafu
@@ -42,9 +46,10 @@ class GraphVisualization:
 		canvas = FigureCanvasTkAgg(fig, master=root)
 
 		def drawCanvas():
-			plt.clf()
+			plt.clf()			#czyszczenie widoku za  każdym wyrysowywaniem
 			g.set_color()
 			fig.clear()
+
 			legend_elements = [Line2D([0], [0], marker='o', color='w', label='Actual node',markerfacecolor='r', markersize=10),
 							   Line2D([0], [0], marker='o', color='w', label='Every neighbour checked',markerfacecolor='b', markersize=10),
 							   Line2D([0], [0], marker='o', color='w', label='Has neighbours to check',markerfacecolor='yellow', markersize=10),
@@ -52,16 +57,24 @@ class GraphVisualization:
 							   Line2D([0], [0], linewidth=1, color='black', label = 'Chosen route')]
 			if isinstance(alg, Dijkstra):
 				legend_elements.insert(3,Line2D([0], [0], marker='o', color='w', label='Checking cost to this node',markerfacecolor='orange',
-											  markersize=10))
+										  markersize=10))
+			if isinstance(alg, A_star_graph):
+				legend_elements.insert(3, Line2D([0], [0], marker='o', color='w', label='Checking cost to this node',
+												 markerfacecolor='orange',
+												 markersize=10))
+				legend_elements.insert(4, Line2D([0], [0], marker='o', color='w', label='Node to find',
+												 markerfacecolor='black',
+												 markersize=10))
+				legend_elements.insert(5, Line2D([0], [0], marker='o', color='w', label='Node found',
+												 markerfacecolor='pink',
+												 markersize=10))
+
 			plt.legend(handles= legend_elements, loc= 0)
 			nx.draw(g.graph, g.position, node_size=g.size_map, node_color=g.color_map,
 					font_size=7, with_labels=True, labels=g.labels, width=list(g.width.values()))
 			nx.draw_networkx_edge_labels(g.graph, g.position, edge_labels=g.edgeLabels)
 			plt.axis('off')
-
-
 			canvas.draw()
-
 
 		drawCanvas()
 		canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
@@ -70,7 +83,7 @@ class GraphVisualization:
 		def nextGraph():
 			nonlocal stateNumber,g
 			if stateNumber == len(stateList) - 1:
-				if g.actual_node < g.n and g.actual_node != -1:
+				if g.actual_node < g.n and g.actual_node != -1 and not g.found:
 					tmp = copy.deepcopy(g)  # tworzenie kopii stanu, żeby nie edytować dwóch elementów na raz
 					if not g.actual_node == -1:
 						alg.func(tmp)

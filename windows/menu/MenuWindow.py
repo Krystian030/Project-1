@@ -99,6 +99,7 @@ class MenuWindow:
             if self.numberOfDegree.get()!='':
                 self.degree = int(self.numberOfDegree.get())
             self.graph = Graph()
+
             if self.varGraph.get()==0:
                 self.graph.randomTree(self.n,self.degree)
             else:

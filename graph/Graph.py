@@ -28,6 +28,7 @@ class Graph:
         self.edgeLabels = {}
         self.actualChecked = -1
         self.last_node = -1
+        self.found = False
 #
     def loadGraph(self):
         # TODO
@@ -43,7 +44,7 @@ class Graph:
                 self.position = nx.spring_layout(self.graph)
                 break
     def randomGraph(self, n,degree):
-        if (n * degree)%2 == 0:
+        if (n * degree) % 2 == 0:
             self.n = n
         else:
             print("Zeby utworzyć graf tego stopni o podanej liczbie wierzchołków n * negree musi być parzyste")
@@ -52,7 +53,7 @@ class Graph:
             self.graph = nx.random_regular_graph(degree,self.n)     #tworzenie innego grafu(tree) w tym miejscu
             if  nx.is_connected(self.graph):
                 for u, v in self.graph.edges:
-                    self.edgeLabels[u, v] = random.randint(0, 10)
+                    self.edgeLabels[u, v] = 0
                 self.position = nx.spring_layout(self.graph)
                 break
 #Inicjalizacja daych pomocniczych do grafu
@@ -92,8 +93,11 @@ class Graph:
             self.size_map[self.order.index(self.actual_node)] = 1000
         if self.actualChecked !=-1:
             self.color_map[self.order.index(self.actualChecked)] = "orange"
-        if self.last_node !=-1:
-            self.color_map[self.order.index(self.last_node)] = "black"
+        if self.last_node !=-1 :
+            if  not self.found:
+                self.color_map[self.order.index(self.last_node)] = "black"
+            else:
+                self.color_map[self.order.index(self.last_node)] = "pink"
 
     def __str__(self):
         return "Graph n: " + str(self.n)
