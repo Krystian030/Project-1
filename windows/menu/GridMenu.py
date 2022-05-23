@@ -1,3 +1,5 @@
+import copy
+
 from windows.WindowsOption import *
 from windows.GridCreate import *
 from windows.GridUpload import *
@@ -14,9 +16,15 @@ class GridMenu:
         self.grid = None
         self.grid_name = None
         self.radio_btn_option = IntVar()
+        self.prev_grid = None
         self.init_window()
 
     def init_window(self):
+        if self.prev_grid is not None:
+            self.grid = copy.deepcopy(self.prev_grid)
+        if self.algorithm is not None:
+            self.algorithm = None
+            self.radio_btn_option.set(None)
         clear_window(self.root)
         self.root.geometry('400x400')
         self.canvas = Canvas(self.root, width=self.root.winfo_width(), height=self.root.winfo_height())
@@ -32,7 +40,7 @@ class GridMenu:
 
     def grid_label_name(self):
         label_width = Label(self.root, text=f'Grid name: {self.grid_name}', width=10, font=("Roboto", 12, 'bold'))
-        label_width.place(x=130, y=100)
+        label_width.place(x=0, y=100, width=400)
 
     def create_grid_btn(self):
         create_btn = Button(self.canvas, text="Create grid", width=10, background="black", fg="white", font="Roboto", command=self.create)
@@ -68,24 +76,38 @@ class GridMenu:
         start_button = Button(self.canvas, text="Start", width=20, background="black", fg="white", command=self.start, font="Roboto")
         start_button.place(x=100, y=280)
 
+
+    def copy(self):
+        self.grid.root = None
+        self.grid.grid_config = None
+        self.grid.parent = None
+        self.prev_grid = copy.deepcopy(self.grid)
+
     def start(self):
         print(self.algorithm)
         if self.grid is not None and self.algorithm is not None:
             print("STAAAAAAAART")
+            self.copy()
             self.grid.root = self.root
             self.grid.parent = self
             self.grid.algorithm = self.algorithm
+            self.grid.grid_config_initialize(self)
             self.grid.algorithm_visualisation()
         else:
             messagebox.showerror("Error", "Set algorithm and grid")
 
     def upload(self):
+        self.prev_grid = None
+        self.grid = None
         GridUpload(self.root, self)
 
     def create(self):
+        self.prev_grid = None
+        self.grid = None
         GridCreate(self.root, self)
 
     def change(self):
+        self.prev_grid = None
         self.grid.root = self.root
         self.grid.parent = self
         self.grid.grid_config_initialize(self)

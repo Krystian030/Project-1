@@ -60,4 +60,9 @@ class Node:
     def change_type(self, type_node):
         if type(self.type) != Obstacle and type(self.type) != River and type(self.type) != Ground:
             self.type = type_node
+        elif type(self.type) == River:
+            self.type.color = "dark blue"
+        elif type(self.type) == Ground:
+            self.type.color = "dark gray"
+            # self.type.color = "dark " + self.type.color
         # self.type = type_node

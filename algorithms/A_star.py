@@ -53,17 +53,17 @@ class AStarGrid:
 
             children = self.grid.get_neighbours(node)
             for child in children:
-                if not child.visited:
-                    cost = node.cost + self.grid.return_move_cost(child)
-                    if cost < child.cost:
-                        child.parent = node
-                        child.cost = cost
-                        child.priority = cost + abs(child.x - self.end_node.x) + abs(child.y - self.end_node.y)
-                        if not child in self.q:
-                            self.q.append(child)
-                            if child != self.end_node:
-                                child.change_type(self.to_visit)
-                                self.state.append(child)
+                # if not child.visited:
+                cost = node.cost + self.grid.return_move_cost(child)
+                if cost < child.cost:
+                    child.parent = node
+                    child.cost = cost
+                    child.priority = cost + abs(child.x - self.end_node.x) + abs(child.y - self.end_node.y)
+                    if not child in self.q:
+                        self.q.append(child)
+                        if child != self.end_node:
+                            child.change_type(self.to_visit)
+                            self.state.append(child)
             self.grid.node_to_change = copy.deepcopy(self.state)
             self.states.append(copy.deepcopy(self.state))
             self.state = []

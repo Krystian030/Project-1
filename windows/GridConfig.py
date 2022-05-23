@@ -183,21 +183,32 @@ class GridConfig:
             elif self.mode == CLEAR:
                 self.set_clear(event)
 
+    def check_rect(self, rect):
+        if self.grid.start_node == rect:
+            self.grid.start_node = None
+            rect.type = None
+        elif self.grid.end_node == rect:
+            self.grid.end_node = None
+            rect.type = None
+
     def set_obstacle(self, event):
         rectId = self.grid.find_closest_node(self.canvas, event)
         obstacle = self.grid.find_node_by_id(rectId)
+        self.check_rect(obstacle)
         obstacle.type = Obstacle()
         self.canvas.itemconfig(rectId, fill=obstacle.type.color)
 
     def set_ground(self, event):
         rectId = self.grid.find_closest_node(self.canvas, event)
         ground = self.grid.find_node_by_id(rectId)
+        self.check_rect(ground)
         ground.type = Ground()
         self.canvas.itemconfig(rectId, fill=ground.type.color)
 
     def set_river(self, event):
         rectId = self.grid.find_closest_node(self.canvas, event)
         river = self.grid.find_node_by_id(rectId)
+        self.check_rect(river)
         river.type = River()
         self.canvas.itemconfig(rectId, fill=river.type.color)
 
