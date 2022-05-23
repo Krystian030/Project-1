@@ -7,6 +7,7 @@ class Dijkstra:
         self.costDict = defaultdict(list)       #[nie spr] = [koszt dojscia, z kąd przychodzimy]
         self.struct.labels[0] = str(0)
         self.elementsChecked = []
+
     def func(self,graph):
         if len(graph.visited) != graph.n-1:
             if all(elem in self.elementsChecked + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):

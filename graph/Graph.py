@@ -59,7 +59,7 @@ class Graph:
     def data_init(self):
         self.color_map = ["green"] * self.n
         self.size_map = [500]*self.n
-        self.last_node = self.n - 1
+
         for id in self.position.keys():
             self.order.append(id)
         for u,v in self.graph.edges:

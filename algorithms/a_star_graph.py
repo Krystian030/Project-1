@@ -1,5 +1,5 @@
 from collections import defaultdict
-class Dijkstra:
+class A_star_graph:
     def __init__(self,structure):
         self.struct = structure
         self.struct.tovisit.append(self.struct.actual_node)
@@ -9,6 +9,7 @@ class Dijkstra:
         self.struct.labels[0] = str(0)
         self.elementsChecked = []
         self.heuristic_values = [structure.n] * structure.n
+
     def func(self,graph):
         if len(graph.visited) != graph.n-1:
             if all(elem in self.elementsChecked + graph.visited for elem in graph.graph.neighbors(graph.actual_node)):
@@ -47,7 +48,6 @@ class Dijkstra:
                             graph.tovisit.append(a)
                         self.elementsChecked.append(a)
                         graph.labels[a] = str(self.costDict.get(a)[0])
-
                         break
 
         else:
