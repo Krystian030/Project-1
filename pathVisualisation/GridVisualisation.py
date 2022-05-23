@@ -10,6 +10,7 @@ import copy
 class GridVisualisation:
 
     def __init__(self, grid, root):
+        self.buttons = None
         self.grid = grid
         self.root = root
         self.init_grid_board = copy.deepcopy(self.grid.board)
@@ -37,25 +38,25 @@ class GridVisualisation:
         btn4 = Button(self.root, text="Stop", width=20, background="black", fg="white",
                       command=self.stop_auto)
         btn4.place(x=padding_x + 50, y=200)
-
+        self.buttons = [btn, btn2, btn3, btn4]
         create_back_button = Button(self.root, text="Back to menu", width=20, background="black", fg="white",
                                     command=self.grid.parent.init_window, font="Roboto")
         create_back_button.place(x=padding_x + 50, y=350)
-
 
     def start_algorithm(self):
         self.grid.algorithm.start_algorithm()
         self.states = self.grid.algorithm.algorithm()
 
     def print_path(self, color):
+        for btn in self.buttons:
+            btn.destroy()
         for node in self.grid.path:
             self.change_node_color(node, color)
 
-
     def inc_state(self):
         if self.state_number < len(self.states) - 1:
-            self.state_number += 1
             self.update_grid_state_number(self.states[self.state_number])
+            self.state_number += 1
         # ostatni state
         elif self.state_number == len(self.states) - 1:
             self.update_grid_state_number(self.states[self.state_number][:1])
@@ -87,7 +88,7 @@ class GridVisualisation:
         if self.state_number == len(self.states) - 1:
             self.update_grid_state_number(self.states[self.state_number][:1])
             self.print_path("green")
-            self.grid.board = copy.deepcopy(self.init_grid_board)
+            # self.grid.board = copy.deepcopy(self.init_grid_board)
 
     def stop_auto(self):
         self.auto_running = False

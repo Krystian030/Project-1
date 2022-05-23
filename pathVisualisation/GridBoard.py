@@ -51,7 +51,7 @@ class GridBoard:
     @staticmethod
     def return_move_cost(node_to):
         if type(node_to.type) == River:
-            return 555
+            return 15
         elif type(node_to.type) == Ground:
             return 3
         else:
